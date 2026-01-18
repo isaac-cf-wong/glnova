@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from aiohttp import ClientResponse
 
-from glnova.client.async_gitlab import AsyncGitLab
+if TYPE_CHECKING:
+    from glnova.client.async_gitlab import AsyncGitLab
 
 
 class AsyncResource:
