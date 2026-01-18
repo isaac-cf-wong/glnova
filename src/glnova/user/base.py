@@ -13,7 +13,7 @@ class BaseUser:
         If account_id is None, returns the endpoint for the authenticated user.
 
         Args:
-            id: The account ID of the user.
+            account_id: The account ID of the user. If None, retrieves the authenticated user.
 
         Returns:
             The API endpoint for the user.
