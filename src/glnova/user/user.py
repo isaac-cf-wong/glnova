@@ -1,4 +1,4 @@
-"""GitHub User resource."""
+"""GitLab User resource."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from glnova.utils.response import process_response_with_last_modified
 
 
 class User(BaseUser, Resource):
-    """GitHub User resource."""
+    """GitLab User resource."""
 
     def _get_user(
         self,
