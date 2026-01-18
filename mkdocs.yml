@@ -73,6 +73,19 @@ nav:
       - Modules:
           - glnova:
               - Overview: reference/glnova/index.md
+              - Client:
+                  - Overview: reference/glnova/client/index.md
+                  - Client: reference/glnova/client/base.md
+                  - AsyncGitLab: reference/glnova/client/async_gitlab.md
+                  - GitLab: reference/glnova/client/gitlab.md
+              - Resource:
+                  - Overview: reference/glnova/resource/index.md
+                  - Resource: reference/glnova/resource/resource.md
+                  - AsyncResource: reference/glnova/resource/async_resource.md
+              - User:
+                  - Overview: reference/glnova/user/index.md
+                  - User: reference/glnova/user/user.md
+                  - AsyncUser: reference/glnova/user/async_user.md
               - Version: reference/glnova/version.md
               - Utils:
                   - Overview: reference/glnova/utils/index.md
