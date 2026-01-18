@@ -322,7 +322,7 @@ class AsyncUser(BaseUser, AsyncResource):
         page: int = 1,
         per_page: int = 20,
         order_by: str = "id",
-        sort="asc",
+        sort: Literal["asc", "desc"] = "asc",
         etag: str | None = None,
         **kwargs: Any,
     ) -> ClientResponse:
@@ -419,7 +419,7 @@ class AsyncUser(BaseUser, AsyncResource):
         page: int = 1,
         per_page: int = 20,
         order_by: str = "id",
-        sort="asc",
+        sort: Literal["asc", "desc"] = "asc",
         etag: str | None = None,
         **kwargs: Any,
     ) -> tuple[list[dict[str, Any]], int, str | None]:
