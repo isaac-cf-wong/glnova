@@ -84,9 +84,6 @@ def main(
 
 def register_commands() -> None:
     """Register CLI commands."""
-    from glnova.cli.hello import hello_command
-
-    app.command(name="hello")(hello_command)
 
 
 register_commands()
