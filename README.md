@@ -19,7 +19,7 @@ enabling seamless integration with GitLab instances for automation, data retriev
 
 ## Features
 
-Full API Coverage: Access to repositories, users, groups, issues, pull requests, and more.
+Full API Coverage: Access to repositories, users, groups, issues, merge requests, and more.
 
 - Easy Authentication: Support for token-based authentication.
 - Asynchronous Support: Built with async/await for non-blocking operations.
