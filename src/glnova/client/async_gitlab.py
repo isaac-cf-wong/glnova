@@ -79,7 +79,7 @@ class AsyncGitLab(Client):
         Args:
             method: The HTTP method (GET, POST, etc.).
             endpoint: The API endpoint.
-            etag: str | None = None,
+            etag: Optional ETag for conditional requests.
             headers: Optional headers to include in the request.
             timeout: Request timeout in seconds.
             **kwargs: Additional arguments for the request.
