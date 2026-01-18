@@ -25,6 +25,7 @@ envlist
 envpython
 getrecursionlimit
 glightbox
+glnova
 hotfixes
 htmlcov
 inlinevar
@@ -57,6 +58,7 @@ pyupgrade
 pywin
 rcfile
 scipy
+scriptable
 setrecursionlimit
 shellcheck
 softprops
