@@ -17,7 +17,8 @@ class TestIssue:
         mock_response.status_code = 200
         mock_response.json.return_value = [{"id": 1, "title": "Test Issue"}]
 
-        mocker.patch.object(issue, "_list_issues", return_value=mock_response)
+        mocker.patch.object(issue, "_list_issues_helper", return_value=("/issues", {"page": 1, "per_page": 20}, {}))
+        mocker.patch.object(issue, "_get", return_value=mock_response)
         mocker.patch(
             "glnova.issue.issue.process_response_with_last_modified",
             return_value=([{"id": 1, "title": "Test Issue"}], 200, "etag123"),
@@ -26,7 +27,7 @@ class TestIssue:
         result = issue.list_issues()
 
         assert result == ([{"id": 1, "title": "Test Issue"}], 200, "etag123")
-        issue._list_issues.assert_called_once_with(
+        issue._list_issues_helper.assert_called_once_with(
             group=None,
             project=None,
             assignee_id=None,
@@ -62,8 +63,8 @@ class TestIssue:
             cursor=None,
             page=1,
             per_page=20,
-            etag=None,
         )
+        issue._get.assert_called_once_with(endpoint="/issues", params={"page": 1, "per_page": 20}, etag=None)
 
     def test_list_issues_with_params(self, mocker):
         """Test list_issues with various parameters."""
@@ -74,7 +75,18 @@ class TestIssue:
         mock_response.status_code = 200
         mock_response.json.return_value = [{"id": 2, "title": "Filtered Issue"}]
 
-        mocker.patch.object(issue, "_list_issues", return_value=mock_response)
+        mocker.patch.object(
+            issue,
+            "_list_issues_helper",
+            return_value=(
+                # cSpell: disable
+                "/projects/test%2Fproject/issues",
+                # cSpell: enable
+                {"state": "opened", "labels": "bug", "page": 2, "per_page": 10},
+                {},
+            ),
+        )
+        mocker.patch.object(issue, "_get", return_value=mock_response)
         mocker.patch(
             "glnova.issue.issue.process_response_with_last_modified",
             return_value=([{"id": 2, "title": "Filtered Issue"}], 200, "etag456"),
@@ -90,7 +102,7 @@ class TestIssue:
         )
 
         assert result == ([{"id": 2, "title": "Filtered Issue"}], 200, "etag456")
-        issue._list_issues.assert_called_once_with(
+        issue._list_issues_helper.assert_called_once_with(
             group=None,
             project="test/project",
             assignee_id=None,
@@ -126,6 +138,12 @@ class TestIssue:
             cursor=None,
             page=2,
             per_page=10,
+        )
+        issue._get.assert_called_once_with(
+            # cSpell: disable
+            endpoint="/projects/test%2Fproject/issues",
+            # cSpell: enable
+            params={"state": "opened", "labels": "bug", "page": 2, "per_page": 10},
             etag="old_etag",
         )
 
@@ -138,7 +156,8 @@ class TestIssue:
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": 123, "title": "Test Issue"}
 
-        mocker.patch.object(issue, "_get_issue", return_value=mock_response)
+        mocker.patch.object(issue, "_get_issue_helper", return_value=("/issues/123", {}))
+        mocker.patch.object(issue, "_get", return_value=mock_response)
         mocker.patch(
             "glnova.issue.issue.process_response_with_last_modified",
             return_value=({"id": 123, "title": "Test Issue"}, 200, "etag789"),
@@ -147,7 +166,8 @@ class TestIssue:
         result = issue.get_issue(issue_id=123)
 
         assert result == ({"id": 123, "title": "Test Issue"}, 200, "etag789")
-        issue._get_issue.assert_called_once_with(issue_id=123, project_id=None, issue_iid=None, etag=None)
+        issue._get_issue_helper.assert_called_once_with(issue_id=123, project_id=None, issue_iid=None)
+        issue._get.assert_called_once_with(endpoint="/issues/123", etag=None)
 
     def test_get_issue_by_project_iid(self, mocker):
         """Test get_issue with project_id and issue_iid."""
@@ -158,7 +178,10 @@ class TestIssue:
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": 456, "iid": 10, "title": "Project Issue"}
 
-        mocker.patch.object(issue, "_get_issue", return_value=mock_response)
+        # cSpell: disable
+        mocker.patch.object(issue, "_get_issue_helper", return_value=("/projects/test%2Fproject/issues/10", {}))
+        # cSpell: enable
+        mocker.patch.object(issue, "_get", return_value=mock_response)
         mocker.patch(
             "glnova.issue.issue.process_response_with_last_modified",
             return_value=({"id": 456, "iid": 10, "title": "Project Issue"}, 200, "etag101"),
@@ -167,9 +190,10 @@ class TestIssue:
         result = issue.get_issue(project_id="test/project", issue_iid=10, etag="old_etag")
 
         assert result == ({"id": 456, "iid": 10, "title": "Project Issue"}, 200, "etag101")
-        issue._get_issue.assert_called_once_with(
-            issue_id=None, project_id="test/project", issue_iid=10, etag="old_etag"
-        )
+        issue._get_issue_helper.assert_called_once_with(issue_id=None, project_id="test/project", issue_iid=10)
+        # cSpell: disable
+        issue._get.assert_called_once_with(endpoint="/projects/test%2Fproject/issues/10", etag="old_etag")
+        # cSpell: enable
 
     def test_edit_issue_minimal(self, mocker):
         """Test edit_issue with minimal parameters."""
@@ -180,7 +204,8 @@ class TestIssue:
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": 789, "title": "Updated Issue"}
 
-        mocker.patch.object(issue, "_edit_issue", return_value=mock_response)
+        mocker.patch.object(issue, "_edit_issue_helper", return_value=("/projects/test/issues/5", {}))
+        mocker.patch.object(issue, "_put", return_value=mock_response)
         mocker.patch(
             "glnova.issue.issue.process_response_with_last_modified",
             return_value=({"id": 789, "title": "Updated Issue"}, 200, "etag202"),
@@ -189,7 +214,7 @@ class TestIssue:
         result = issue.edit_issue(project_id="test/project", issue_iid=5)
 
         assert result == ({"id": 789, "title": "Updated Issue"}, 200, "etag202")
-        issue._edit_issue.assert_called_once_with(
+        issue._edit_issue_helper.assert_called_once_with(
             project_id="test/project",
             issue_iid=5,
             add_labels=None,
@@ -209,6 +234,7 @@ class TestIssue:
             updated_at=None,
             weight=None,
         )
+        issue._put.assert_called_once_with(endpoint="/projects/test/issues/5", data={})
 
     def test_edit_issue_with_params(self, mocker):
         """Test edit_issue with various parameters."""
@@ -219,7 +245,19 @@ class TestIssue:
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": 101, "title": "Fully Updated Issue"}
 
-        mocker.patch.object(issue, "_edit_issue", return_value=mock_response)
+        expected_payload = {
+            "title": "New Title",
+            "description": "New Description",
+            "labels": "urgent,bug",
+            "add_labels": "feature",
+            "remove_labels": "old",
+            "state_event": "close",
+            "assignee_ids": [456, 789],
+            "confidential": True,
+            "weight": 3,
+        }
+        mocker.patch.object(issue, "_edit_issue_helper", return_value=("/projects/123/issues/7", expected_payload))
+        mocker.patch.object(issue, "_put", return_value=mock_response)
         mocker.patch(
             "glnova.issue.issue.process_response_with_last_modified",
             return_value=({"id": 101, "title": "Fully Updated Issue"}, 200, "etag303"),
@@ -240,7 +278,7 @@ class TestIssue:
         )
 
         assert result == ({"id": 101, "title": "Fully Updated Issue"}, 200, "etag303")
-        issue._edit_issue.assert_called_once_with(
+        issue._edit_issue_helper.assert_called_once_with(
             project_id=123,
             issue_iid=7,
             add_labels=["feature"],
@@ -260,3 +298,4 @@ class TestIssue:
             updated_at=None,
             weight=3,
         )
+        issue._put.assert_called_once_with(endpoint="/projects/123/issues/7", data=expected_payload)
