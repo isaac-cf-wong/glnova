@@ -446,7 +446,6 @@ class Issue(BaseIssue, AsyncResource):
             title=title,
             updated_at=updated_at,
             weight=weight,
-            **kwargs,
         )
         return await self._put(endpoint=endpoint, data=data, **kwargs)
 
