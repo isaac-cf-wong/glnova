@@ -376,3 +376,146 @@ class Issue(BaseIssue, Resource):
         response = self._get_issue(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, etag=etag, **kwargs)
         data, status_code, etag_value = process_response_with_last_modified(response)
         return cast(dict[str, Any], data), status_code, etag_value
+
+    def _edit_issue(  # noqa: PLR0913
+        self,
+        project_id: int | str,
+        issue_iid: int,
+        add_labels: list[str] | None = None,
+        assignee_ids: list[int] | None = None,
+        confidential: bool | None = None,
+        description: str | None = None,
+        discussion_locked: bool | None = None,
+        due_date: str | None = None,
+        epic_id: int | None = None,
+        epic_iid: int | None = None,
+        issue_type: Literal["issue", "incident", "test_case", "task"] | None = None,
+        labels: list[str] | None = None,
+        milestone_id: int | None = None,
+        remove_labels: list[str] | None = None,
+        state_event: Literal["close", "reopen"] | None = None,
+        title: str | None = None,
+        updated_at: str | None = None,
+        weight: int | None = None,
+        **kwargs: Any,
+    ) -> Response:
+        """Edit an existing issue.
+
+        Args:
+            project_id: The project name or ID.
+            issue_iid: The issue IID within the project.
+            add_labels: Labels to add.
+            assignee_ids: Assignee IDs.
+            confidential: Set confidentiality.
+            description: Issue description.
+            discussion_locked: Lock or unlock discussion.
+            due_date: Due date.
+            epic_id: Epic ID.
+            epic_iid: Epic IID.
+            issue_type: Issue type.
+            labels: Labels to set.
+            milestone_id: Milestone ID.
+            remove_labels: Labels to remove.
+            state_event: State event.
+            title: Issue title.
+            updated_at: Updated at timestamp.
+            weight: Issue weight.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A Response object containing the updated issue details.
+        """
+        endpoint, data = self._edit_issue_helper(
+            project_id=project_id,
+            issue_iid=issue_iid,
+            add_labels=add_labels,
+            assignee_ids=assignee_ids,
+            confidential=confidential,
+            description=description,
+            discussion_locked=discussion_locked,
+            due_date=due_date,
+            epic_id=epic_id,
+            epic_iid=epic_iid,
+            issue_type=issue_type,
+            labels=labels,
+            milestone_id=milestone_id,
+            remove_labels=remove_labels,
+            state_event=state_event,
+            title=title,
+            updated_at=updated_at,
+            weight=weight,
+            **kwargs,
+        )
+        return self._put(endpoint=endpoint, data=data, **kwargs)
+
+    def edit_issue(  # noqa: PLR0913
+        self,
+        project_id: int | str,
+        issue_iid: int,
+        add_labels: list[str] | None = None,
+        assignee_ids: list[int] | None = None,
+        confidential: bool | None = None,
+        description: str | None = None,
+        discussion_locked: bool | None = None,
+        due_date: str | None = None,
+        epic_id: int | None = None,
+        epic_iid: int | None = None,
+        issue_type: Literal["issue", "incident", "test_case", "task"] | None = None,
+        labels: list[str] | None = None,
+        milestone_id: int | None = None,
+        remove_labels: list[str] | None = None,
+        state_event: Literal["close", "reopen"] | None = None,
+        title: str | None = None,
+        updated_at: str | None = None,
+        weight: int | None = None,
+        **kwargs: Any,
+    ) -> tuple[dict[str, Any], int, str | None]:
+        """Edit an existing issue.
+
+        Args:
+            project_id: The project name or ID.
+            issue_iid: The issue IID within the project.
+            add_labels: Labels to add.
+            assignee_ids: Assignee IDs.
+            confidential: Set confidentiality.
+            description: Issue description.
+            discussion_locked: Lock or unlock discussion.
+            due_date: Due date.
+            epic_id: Epic ID.
+            epic_iid: Epic IID.
+            issue_type: Issue type.
+            labels: Labels to set.
+            milestone_id: Milestone ID.
+            remove_labels: Labels to remove.
+            state_event: State event.
+            title: Issue title.
+            updated_at: Updated at timestamp.
+            weight: Issue weight.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A tuple containing the updated issue details, the status code, and the ETag value.
+        """
+        response = self._edit_issue(
+            project_id=project_id,
+            issue_iid=issue_iid,
+            add_labels=add_labels,
+            assignee_ids=assignee_ids,
+            confidential=confidential,
+            description=description,
+            discussion_locked=discussion_locked,
+            due_date=due_date,
+            epic_id=epic_id,
+            epic_iid=epic_iid,
+            issue_type=issue_type,
+            labels=labels,
+            milestone_id=milestone_id,
+            remove_labels=remove_labels,
+            state_event=state_event,
+            title=title,
+            updated_at=updated_at,
+            weight=weight,
+            **kwargs,
+        )
+        data, status_code, etag_value = process_response_with_last_modified(response)
+        return cast(dict[str, Any], data), status_code, etag_value
