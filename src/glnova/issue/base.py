@@ -222,3 +222,53 @@ class BaseIssue:
         params["per_page"] = per_page
 
         return endpoint, params, kwargs
+
+    def _get_issue_endpoint(
+        self,
+        issue_id: int | None = None,
+        project_id: int | str | None = None,
+        issue_iid: int | None = None,
+    ) -> str:
+        """Construct the endpoint for getting a specific issue.
+
+        Args:
+            issue_id: The global issue ID (Administrator only).
+            project_id: The project name or ID.
+            issue_iid: The issue IID within the project.
+
+        Returns:
+            str: The constructed endpoint.
+        """
+        if issue_id is not None:
+            return f"/issues/{issue_id}"
+        if project_id is not None and issue_iid is not None:
+            if isinstance(project_id, str):
+                project_id = project_id.replace("/", "%2F")
+            return f"/projects/{project_id}/issues/{issue_iid}"
+        raise ValueError("Either issue_id or both project_id and issue_iid must be provided.")
+
+    def _get_issue_helper(
+        self,
+        issue_id: int | None = None,
+        project_id: int | str | None = None,
+        issue_iid: int | None = None,
+        **kwargs: Any,
+    ) -> tuple[str, dict[str, Any]]:
+        """Helper method to construct endpoint and parameters for getting a specific issue.
+
+        Args:
+            issue_id: The global issue ID (Administrator only).
+            project_id: The project name or ID.
+            issue_iid: The issue IID within the project.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            tuple: A tuple containing the endpoint and parameters dictionary.
+        """
+        endpoint = self._get_issue_endpoint(
+            issue_id=issue_id,
+            project_id=project_id,
+            issue_iid=issue_iid,
+        )
+
+        return endpoint, kwargs
