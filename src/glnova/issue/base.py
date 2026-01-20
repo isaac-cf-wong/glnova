@@ -272,3 +272,109 @@ class BaseIssue:
         )
 
         return endpoint, kwargs
+
+    def _edit_issue_endpoint(
+        self,
+        project_id: int | str,
+        issue_iid: int,
+    ) -> str:
+        """Construct the endpoint for editing a specific issue.
+
+        Args:
+            project_id: The project name or ID.
+            issue_iid: The issue IID within the project.
+
+        Returns:
+            str: The constructed endpoint.
+        """
+        if isinstance(project_id, str):
+            project_id = project_id.replace("/", "%2F")
+
+        return f"/projects/{project_id}/issues/{issue_iid}"
+
+    def _edit_issue_helper(  # noqa: PLR0912, PLR0913
+        self,
+        project_id: int | str,
+        issue_iid: int,
+        add_labels: list[str] | None = None,
+        assignee_ids: list[int] | None = None,
+        confidential: bool | None = None,
+        description: str | None = None,
+        discussion_locked: bool | None = None,
+        due_date: str | None = None,
+        epic_id: int | None = None,
+        epic_iid: int | None = None,
+        issue_type: Literal["issue", "incident", "test_case", "task"] | None = None,
+        labels: list[str] | None = None,
+        milestone_id: int | None = None,
+        remove_labels: list[str] | None = None,
+        state_event: Literal["close", "reopen"] | None = None,
+        title: str | None = None,
+        updated_at: str | None = None,
+        weight: int | None = None,
+    ) -> tuple[str, dict[str, Any]]:
+        """Helper method to construct endpoint and parameters for editing a specific issue.
+
+        Args:
+            project_id: The project name or ID.
+            issue_iid: The issue IID within the project.
+            add_labels: Labels to add.
+            assignee_ids: Assignee IDs.
+            confidential: Set confidentiality.
+            description: Issue description.
+            discussion_locked: Lock or unlock discussion.
+            due_date: Due date.
+            epic_id: Epic ID.
+            epic_iid: Epic IID.
+            issue_type: Issue type.
+            labels: Labels to set.
+            milestone_id: Milestone ID.
+            remove_labels: Labels to remove.
+            state_event: State event.
+            title: Issue title.
+            updated_at: Updated at timestamp.
+            weight: Issue weight.
+
+        Returns:
+            tuple: A tuple containing the endpoint and parameters dictionary.
+        """
+        endpoint = self._edit_issue_endpoint(
+            project_id=project_id,
+            issue_iid=issue_iid,
+        )
+
+        payload = {}
+        if add_labels is not None:
+            payload["add_labels"] = ",".join(add_labels)
+        if assignee_ids is not None:
+            payload["assignee_ids"] = assignee_ids
+        if confidential is not None:
+            payload["confidential"] = confidential
+        if description is not None:
+            payload["description"] = description
+        if discussion_locked is not None:
+            payload["discussion_locked"] = discussion_locked
+        if due_date is not None:
+            payload["due_date"] = due_date
+        if epic_id is not None:
+            payload["epic_id"] = epic_id
+        if epic_iid is not None:
+            payload["epic_iid"] = epic_iid
+        if issue_type is not None:
+            payload["issue_type"] = issue_type
+        if labels is not None:
+            payload["labels"] = ",".join(labels)
+        if milestone_id is not None:
+            payload["milestone_id"] = milestone_id
+        if remove_labels is not None:
+            payload["remove_labels"] = ",".join(remove_labels)
+        if state_event is not None:
+            payload["state_event"] = state_event
+        if title is not None:
+            payload["title"] = title
+        if updated_at is not None:
+            payload["updated_at"] = updated_at
+        if weight is not None:
+            payload["weight"] = weight
+
+        return endpoint, payload
