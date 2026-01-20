@@ -327,3 +327,54 @@ class Issue(BaseIssue, AsyncResource):
         )
         data, status_code, etag_value = await process_async_response_with_last_modified(response)
         return cast(list[dict[str, Any]], data), status_code, etag_value
+
+    async def _get_issue(
+        self,
+        issue_id: int | None = None,
+        project_id: int | str | None = None,
+        issue_iid: int | None = None,
+        etag: str | None = None,
+        **kwargs: Any,
+    ) -> ClientResponse:
+        """Get a single issue by ID or IID.
+
+        Args:
+            issue_id: The global issue ID (Administrator only).
+            project_id: The project name or ID (required if using issue_iid).
+            issue_iid: The project-specific issue IID.
+            etag: ETag for caching.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A ClientResponse object containing the issue details.
+        """
+        endpoint, kwargs = self._get_issue_helper(
+            issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, **kwargs
+        )
+        return await self._get(endpoint=endpoint, etag=etag, **kwargs)
+
+    async def get_issue(
+        self,
+        issue_id: int | None = None,
+        project_id: int | str | None = None,
+        issue_iid: int | None = None,
+        etag: str | None = None,
+        **kwargs: Any,
+    ) -> tuple[dict[str, Any], int, str | None]:
+        """Get a single issue by ID or IID.
+
+        Args:
+            issue_id: The global issue ID (Administrator only).
+            project_id: The project name or ID (required if using issue_iid).
+            issue_iid: The project-specific issue IID.
+            etag: ETag for caching.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A tuple containing the issue details, the status code, and the ETag value.
+        """
+        response = await self._get_issue(
+            issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, etag=etag, **kwargs
+        )
+        data, status_code, etag_value = await process_async_response_with_last_modified(response)
+        return cast(dict[str, Any], data), status_code, etag_value
