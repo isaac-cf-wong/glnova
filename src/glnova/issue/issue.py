@@ -444,7 +444,6 @@ class Issue(BaseIssue, Resource):
             title=title,
             updated_at=updated_at,
             weight=weight,
-            **kwargs,
         )
         return self._put(endpoint=endpoint, data=data, **kwargs)
 
