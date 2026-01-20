@@ -348,9 +348,7 @@ class Issue(BaseIssue, AsyncResource):
         Returns:
             A ClientResponse object containing the issue details.
         """
-        endpoint, kwargs = self._get_issue_helper(
-            issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, **kwargs
-        )
+        endpoint = self._get_issue_helper(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid)
         return await self._get(endpoint=endpoint, etag=etag, **kwargs)
 
     async def get_issue(

@@ -252,18 +252,16 @@ class BaseIssue:
         issue_id: int | None = None,
         project_id: int | str | None = None,
         issue_iid: int | None = None,
-        **kwargs: Any,
-    ) -> tuple[str, dict[str, Any]]:
+    ) -> str:
         """Helper method to construct endpoint and parameters for getting a specific issue.
 
         Args:
             issue_id: The global issue ID (Administrator only).
             project_id: The project name or ID.
             issue_iid: The issue IID within the project.
-            **kwargs: Additional keyword arguments.
 
         Returns:
-            tuple: A tuple containing the endpoint and parameters dictionary.
+            The constructed endpoint.
         """
         endpoint = self._get_issue_endpoint(
             issue_id=issue_id,
@@ -271,7 +269,7 @@ class BaseIssue:
             issue_iid=issue_iid,
         )
 
-        return endpoint, kwargs
+        return endpoint
 
     def _edit_issue_endpoint(
         self,

@@ -348,9 +348,7 @@ class Issue(BaseIssue, Resource):
         Returns:
             A Response object containing the issue details.
         """
-        endpoint, kwargs = self._get_issue_helper(
-            issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, **kwargs
-        )
+        endpoint = self._get_issue_helper(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid)
         return self._get(endpoint=endpoint, etag=etag, **kwargs)
 
     def get_issue(
