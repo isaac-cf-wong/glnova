@@ -165,32 +165,121 @@ class TestBaseIssue:
         assert endpoint == "/projects/test/issues/1"
         assert payload == {}
 
-    def test_edit_issue_helper_with_params(self):
-        """Test _edit_issue_helper with various parameters."""
+    def test_list_issues_helper_full_params(self):
+        """Test _list_issues_helper with all parameters to cover missing lines."""
+        base_issue = BaseIssue()
+        endpoint, params, kwargs = base_issue._list_issues_helper(
+            assignee_id=123,
+            assignee_username=["user1"],
+            author_id=456,
+            author_username="author1",
+            confidential=True,
+            created_after="2023-01-01",
+            created_before="2023-12-31",
+            due_date="today",
+            epic_id=789,
+            health_status="on_track",
+            iids=[1, 2, 3],
+            search_in=["title"],
+            issue_type="issue",
+            iteration_id=101,
+            iteration_title="Sprint 1",
+            labels=["bug"],
+            milestone_id="Upcoming",
+            milestone="v1.0",
+            my_reaction_emoji="thumbs_up",
+            non_archived=True,
+            not_match="assignee_id",
+            order_by="created_at",
+            scope="assigned_to_me",
+            search="query",
+            sort="desc",
+            state="opened",
+            updated_after="2023-06-01",
+            updated_before="2023-06-30",
+            weight=5,
+            with_labels_details=True,
+            page=1,
+            per_page=20,
+        )
+        assert endpoint == "/issues"
+        expected_params = {
+            "assignee_id": 123,
+            "assignee_username": ["user1"],
+            "author_id": 456,
+            "author_username": "author1",
+            "confidential": True,
+            "created_after": "2023-01-01",
+            "created_before": "2023-12-31",
+            "due_date": "today",
+            "epic_id": 789,
+            "health_status": "on_track",
+            "iids": [1, 2, 3],
+            "in": ["title"],
+            "issue_type": "issue",
+            "iteration_id": 101,
+            "iteration_title": "Sprint 1",
+            "labels": "bug",
+            "milestone_id": "Upcoming",
+            "milestone": "v1.0",
+            "my_reaction_emoji": "thumbs_up",
+            "non_archived": True,
+            "not": "assignee_id",
+            "order_by": "created_at",
+            "scope": "assigned_to_me",
+            "search": "query",
+            "sort": "desc",
+            "state": "opened",
+            "updated_after": "2023-06-01",
+            "updated_before": "2023-06-30",
+            "weight": 5,
+            "with_labels_details": True,
+            "page": 1,
+            "per_page": 20,
+        }
+        assert params == expected_params
+        assert kwargs == {}
+
+    def test_edit_issue_helper_full_params(self):
+        """Test _edit_issue_helper with all parameters to cover missing lines."""
         base_issue = BaseIssue()
         endpoint, payload = base_issue._edit_issue_helper(
             project_id="test",
             issue_iid=1,
-            title="New Title",
-            description="New Description",
-            labels=["bug", "urgent"],
             add_labels=["feature"],
+            assignee_ids=[123],
+            confidential=True,
+            description="Desc",
+            discussion_locked=True,
+            due_date="2023-12-31",
+            epic_id=456,
+            epic_iid=789,
+            issue_type="issue",
+            labels=["bug"],
+            milestone_id=101,
             remove_labels=["old"],
             state_event="close",
-            assignee_ids=[123, 456],
-            confidential=True,
+            title="Title",
+            updated_at="2023-01-01T00:00:00Z",
             weight=5,
         )
         assert endpoint == "/projects/test/issues/1"
         expected_payload = {
-            "title": "New Title",
-            "description": "New Description",
-            "labels": "bug,urgent",
             "add_labels": "feature",
+            "assignee_ids": [123],
+            "confidential": True,
+            "description": "Desc",
+            "discussion_locked": True,
+            "due_date": "2023-12-31",
+            "epic_id": 456,
+            "epic_iid": 789,
+            "issue_type": "issue",
+            "labels": "bug",
+            "milestone_id": 101,
             "remove_labels": "old",
             "state_event": "close",
-            "assignee_ids": [123, 456],
-            "confidential": True,
+            "title": "Title",
+            "updated_at": "2023-01-01T00:00:00Z",
             "weight": 5,
         }
         assert payload == expected_payload
