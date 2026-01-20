@@ -28,6 +28,7 @@ glightbox
 glnova
 hotfixes
 htmlcov
+iids
 inlinevar
 isort
 mathjax
