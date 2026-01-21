@@ -8,7 +8,7 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/glnova)](https://pypi.org/project/glnova/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
-[![DOI](https://zenodo.org/badge/924023559.svg)](https://doi.org/10.5281/zenodo.18017404)
+[![DOI](https://zenodo.org/badge/1136398942.svg)](https://doi.org/10.5281/zenodo.18292498)
 
 **Note:** This project is still in progress. The promised features are not fully ready yet, and APIs are subject to change.
 
@@ -114,6 +114,14 @@ glnova --help
 ```bash
 python -c "import glnova; print(glnova.__version__)"
 ```
+
+## Release Schedule
+
+Releases follow a fixed schedule: every Tuesday at 00:00 UTC,
+unless an urgent bugfix is required.
+This ensures predictable updates while allowing flexibility for critical issues.
+Users can view upcoming changes in the draft release on the
+[GitHub Releases page](https://github.com/isaac-cf-wong/glnova/releases).
 
 ## License
 
