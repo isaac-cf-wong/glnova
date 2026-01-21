@@ -130,7 +130,7 @@ class Issue(BaseIssue, AsyncResource):
         Returns:
             A ClientResponse object.
         """
-        endpoint, params, kwargs = self._list_issues_helper(
+        endpoint, params = self._list_issues_helper(
             group=group,
             project=project,
             assignee_id=assignee_id,
@@ -166,7 +166,6 @@ class Issue(BaseIssue, AsyncResource):
             cursor=cursor,
             page=page,
             per_page=per_page,
-            **kwargs,
         )
         return await self._get(endpoint=endpoint, params=params, etag=etag, **kwargs)
 

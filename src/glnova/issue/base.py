@@ -105,8 +105,7 @@ class BaseIssue:
         cursor: str | None = None,
         page: int = 1,
         per_page: int = 20,
-        **kwargs: Any,
-    ) -> tuple[str, dict[str, Any], dict[str, Any]]:
+    ) -> tuple[str, dict[str, Any]]:
         """Helper method to construct endpoint and parameters for listing issues.
 
         Args:
@@ -145,10 +144,9 @@ class BaseIssue:
             cursor: Cursor for pagination (only for project issues).
             page: Page number for pagination.
             per_page: Number of items per page for pagination.
-            **kwargs: Additional keyword arguments.
 
         Returns:
-            tuple: A tuple containing the endpoint, parameters dictionary, and additional kwargs.
+            tuple: A tuple containing the endpoint, and parameters dictionary.
         """
         endpoint, endpoint_type = self._list_issues_endpoint(group=group, project=project)
 
@@ -221,7 +219,7 @@ class BaseIssue:
         params["page"] = page
         params["per_page"] = per_page
 
-        return endpoint, params, kwargs
+        return endpoint, params
 
     def _get_issue_endpoint(
         self,

@@ -166,7 +166,6 @@ class Issue(BaseIssue, Resource):
             cursor=cursor,
             page=page,
             per_page=per_page,
-            **kwargs,
         )
         return self._get(endpoint=endpoint, params=params, etag=etag, **kwargs)
 
