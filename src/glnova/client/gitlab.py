@@ -8,6 +8,8 @@ import requests
 from requests import Response
 
 from glnova.client.base import Client
+from glnova.issue.issue import Issue
+from glnova.user.user import User
 
 
 class GitLab(Client):
@@ -23,6 +25,10 @@ class GitLab(Client):
         """
         super().__init__(token=token, base_url=base_url)
         self.session: requests.Session | None = None
+
+        # Initialize resource handlers
+        self.issue = Issue(client=self)
+        self.user = User(client=self)
 
     def __str__(self) -> str:
         """Return a string representation of the GitLab client.
