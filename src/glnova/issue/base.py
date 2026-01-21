@@ -182,7 +182,7 @@ class BaseIssue:
         if iteration_title is not None:
             params["iteration_title"] = iteration_title
         if labels is not None:
-            params["labels"] = ",".join(labels)
+            params["labels"] = ",".join(labels) if isinstance(labels, list) else labels
         if milestone_id is not None:
             params["milestone_id"] = milestone_id
         if milestone is not None:
