@@ -18,6 +18,7 @@ class AsyncGitLab(Client):
         Args:
             token: The API token for authentication.
             base_url: The base URL of the GitLab instance.
+
         """
         super().__init__(token=token, base_url=base_url)
         self.session: ClientSession | None = None
@@ -27,6 +28,7 @@ class AsyncGitLab(Client):
 
         Returns:
             str: String representation.
+
         """
         return f"<AsyncGitLab base_url={self.base_url}>"
 
@@ -35,6 +37,7 @@ class AsyncGitLab(Client):
 
         Returns:
             The AsyncGitLab client instance.
+
         """
         if self.session is not None and not self.session.closed:
             raise RuntimeError("AsyncGitLab session already open; do not re-enter context manager.")
@@ -48,6 +51,7 @@ class AsyncGitLab(Client):
             exc_type: The exception type.
             exc_val: The exception value.
             exc_tb: The traceback.
+
         """
         if self.session:
             await self.session.close()
@@ -62,6 +66,7 @@ class AsyncGitLab(Client):
 
         Returns:
             The aiohttp ClientSession instance.
+
         """
         return ClientSession(headers=headers, **kwargs)
 
@@ -86,6 +91,7 @@ class AsyncGitLab(Client):
 
         Returns:
             The HTTP response.
+
         """
         if self.session is None:
             raise RuntimeError(

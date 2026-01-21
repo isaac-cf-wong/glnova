@@ -129,6 +129,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A Response object containing the list of issues.
+
         """
         endpoint, params, kwargs = self._list_issues_helper(
             group=group,
@@ -284,6 +285,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A tuple containing a list of issues, the status code, and the ETag value.
+
         """
         response = self._list_issues(
             group=group,
@@ -346,6 +348,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A Response object containing the issue details.
+
         """
         endpoint = self._get_issue_helper(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid)
         return self._get(endpoint=endpoint, etag=etag, **kwargs)
@@ -369,6 +372,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A tuple containing the issue details, the status code, and the ETag value.
+
         """
         response = self._get_issue(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, etag=etag, **kwargs)
         data, status_code, etag_value = process_response_with_last_modified(response)
@@ -421,6 +425,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A Response object containing the updated issue details.
+
         """
         endpoint, data = self._edit_issue_helper(
             project_id=project_id,
@@ -491,6 +496,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A tuple containing the updated issue details, the status code, and the ETag value.
+
         """
         response = self._edit_issue(
             project_id=project_id,

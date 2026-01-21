@@ -1,3 +1,5 @@
+"""Base class for GitLab Issue resource."""
+
 from __future__ import annotations
 
 import logging
@@ -24,6 +26,7 @@ class BaseIssue:
 
         Returns:
             str: The constructed endpoint.
+
         """
         if project is not None:
             if isinstance(project, str):
@@ -106,7 +109,7 @@ class BaseIssue:
         page: int = 1,
         per_page: int = 20,
     ) -> tuple[str, dict[str, Any]]:
-        """Helper method to construct endpoint and parameters for listing issues.
+        """Construct endpoint and parameters for listing issues.
 
         Args:
             group: The group name or ID.
@@ -147,6 +150,7 @@ class BaseIssue:
 
         Returns:
             tuple: A tuple containing the endpoint, and parameters dictionary.
+
         """
         endpoint, endpoint_type = self._list_issues_endpoint(group=group, project=project)
 
@@ -236,6 +240,7 @@ class BaseIssue:
 
         Returns:
             str: The constructed endpoint.
+
         """
         if issue_id is not None:
             return f"/issues/{issue_id}"
@@ -251,7 +256,7 @@ class BaseIssue:
         project_id: int | str | None = None,
         issue_iid: int | None = None,
     ) -> str:
-        """Helper method to construct endpoint and parameters for getting a specific issue.
+        """Construct endpoint and parameters for getting a specific issue.
 
         Args:
             issue_id: The global issue ID (Administrator only).
@@ -260,6 +265,7 @@ class BaseIssue:
 
         Returns:
             The constructed endpoint.
+
         """
         endpoint = self._get_issue_endpoint(
             issue_id=issue_id,
@@ -282,6 +288,7 @@ class BaseIssue:
 
         Returns:
             str: The constructed endpoint.
+
         """
         if isinstance(project_id, str):
             project_id = project_id.replace("/", "%2F")
@@ -309,7 +316,7 @@ class BaseIssue:
         updated_at: str | None = None,
         weight: int | None = None,
     ) -> tuple[str, dict[str, Any]]:
-        """Helper method to construct endpoint and parameters for editing a specific issue.
+        """Construct endpoint and parameters for editing a specific issue.
 
         Args:
             project_id: The project name or ID.
@@ -333,6 +340,7 @@ class BaseIssue:
 
         Returns:
             tuple: A tuple containing the endpoint and parameters dictionary.
+
         """
         endpoint = self._edit_issue_endpoint(
             project_id=project_id,

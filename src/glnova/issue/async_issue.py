@@ -129,6 +129,7 @@ class Issue(BaseIssue, AsyncResource):
 
         Returns:
             A ClientResponse object.
+
         """
         endpoint, params = self._list_issues_helper(
             group=group,
@@ -284,6 +285,7 @@ class Issue(BaseIssue, AsyncResource):
 
         Returns:
             A tuple containing a list of issues, the status code, and the ETag value.
+
         """
         response = await self._list_issues(
             group=group,
@@ -346,6 +348,7 @@ class Issue(BaseIssue, AsyncResource):
 
         Returns:
             A ClientResponse object containing the issue details.
+
         """
         endpoint = self._get_issue_helper(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid)
         return await self._get(endpoint=endpoint, etag=etag, **kwargs)
@@ -369,6 +372,7 @@ class Issue(BaseIssue, AsyncResource):
 
         Returns:
             A tuple containing the issue details, the status code, and the ETag value.
+
         """
         response = await self._get_issue(
             issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, etag=etag, **kwargs
@@ -423,6 +427,7 @@ class Issue(BaseIssue, AsyncResource):
 
         Returns:
             A ClientResponse object containing the updated issue details.
+
         """
         endpoint, data = self._edit_issue_helper(
             project_id=project_id,
@@ -493,6 +498,7 @@ class Issue(BaseIssue, AsyncResource):
 
         Returns:
             A tuple containing the updated issue details, the status code, and the ETag value.
+
         """
         response = await self._edit_issue(
             project_id=project_id,
