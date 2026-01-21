@@ -4,21 +4,21 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from glnova.issue.async_issue import Issue
+from glnova.issue.async_issue import AsyncIssue
 
 
 class TestAsyncIssue:
-    """Test cases for the async Issue class."""
+    """Test cases for the AsyncIssue class."""
 
     @pytest.mark.asyncio
     async def test_list_issues_minimal(self, mocker):
         """Test list_issues with minimal parameters."""
         mock_client = MagicMock()
-        issue = Issue(client=mock_client)
+        issue = AsyncIssue(client=mock_client)
 
         mock_response = MagicMock()
         mock_response.status = 200
-        mock_response.json = AsyncMock(return_value=[{"id": 1, "title": "Test Issue"}])
+        mock_response.json = AsyncMock(return_value=[{"id": 1, "title": "Test AsyncIssue"}])
         mock_response.headers = {"ETag": "etag123"}
 
         mocker.patch.object(issue, "_list_issues_helper", return_value=("/issues", {"page": 1, "per_page": 20}))
@@ -26,12 +26,12 @@ class TestAsyncIssue:
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
             new_callable=AsyncMock,
-            return_value=([{"id": 1, "title": "Test Issue"}], 200, "etag123"),
+            return_value=([{"id": 1, "title": "Test AsyncIssue"}], 200, "etag123"),
         )
 
         result = await issue.list_issues()
 
-        assert result == ([{"id": 1, "title": "Test Issue"}], 200, "etag123")
+        assert result == ([{"id": 1, "title": "Test AsyncIssue"}], 200, "etag123")
         issue._list_issues_helper.assert_called_once_with(
             group=None,
             project=None,
@@ -75,11 +75,11 @@ class TestAsyncIssue:
     async def test_list_issues_with_params(self, mocker):
         """Test list_issues with various parameters."""
         mock_client = MagicMock()
-        issue = Issue(client=mock_client)
+        issue = AsyncIssue(client=mock_client)
 
         mock_response = MagicMock()
         mock_response.status = 200
-        mock_response.json = AsyncMock(return_value=[{"id": 2, "title": "Filtered Issue"}])
+        mock_response.json = AsyncMock(return_value=[{"id": 2, "title": "Filtered AsyncIssue"}])
         mock_response.headers = {"ETag": "etag456"}
 
         mocker.patch.object(
@@ -96,7 +96,7 @@ class TestAsyncIssue:
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
             new_callable=AsyncMock,
-            return_value=([{"id": 2, "title": "Filtered Issue"}], 200, "etag456"),
+            return_value=([{"id": 2, "title": "Filtered AsyncIssue"}], 200, "etag456"),
         )
 
         result = await issue.list_issues(
@@ -108,7 +108,7 @@ class TestAsyncIssue:
             etag="old_etag",
         )
 
-        assert result == ([{"id": 2, "title": "Filtered Issue"}], 200, "etag456")
+        assert result == ([{"id": 2, "title": "Filtered AsyncIssue"}], 200, "etag456")
         issue._list_issues_helper.assert_called_once_with(
             group=None,
             project="test/project",
@@ -158,11 +158,11 @@ class TestAsyncIssue:
     async def test_get_issue_by_id(self, mocker):
         """Test get_issue with issue_id."""
         mock_client = MagicMock()
-        issue = Issue(client=mock_client)
+        issue = AsyncIssue(client=mock_client)
 
         mock_response = MagicMock()
         mock_response.status = 200
-        mock_response.json = AsyncMock(return_value={"id": 123, "title": "Test Issue"})
+        mock_response.json = AsyncMock(return_value={"id": 123, "title": "Test AsyncIssue"})
         mock_response.headers = {"ETag": "etag789"}
 
         mocker.patch.object(issue, "_get_issue_helper", return_value=("/issues/123"))
@@ -170,12 +170,12 @@ class TestAsyncIssue:
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
             new_callable=AsyncMock,
-            return_value=({"id": 123, "title": "Test Issue"}, 200, "etag789"),
+            return_value=({"id": 123, "title": "Test AsyncIssue"}, 200, "etag789"),
         )
 
         result = await issue.get_issue(issue_id=123)
 
-        assert result == ({"id": 123, "title": "Test Issue"}, 200, "etag789")
+        assert result == ({"id": 123, "title": "Test AsyncIssue"}, 200, "etag789")
         issue._get_issue_helper.assert_called_once_with(issue_id=123, project_id=None, issue_iid=None)
         issue._get.assert_called_once_with(endpoint="/issues/123", etag=None)
 
@@ -183,11 +183,11 @@ class TestAsyncIssue:
     async def test_get_issue_by_project_iid(self, mocker):
         """Test get_issue with project_id and issue_iid."""
         mock_client = MagicMock()
-        issue = Issue(client=mock_client)
+        issue = AsyncIssue(client=mock_client)
 
         mock_response = MagicMock()
         mock_response.status = 200
-        mock_response.json = AsyncMock(return_value={"id": 456, "iid": 10, "title": "Project Issue"})
+        mock_response.json = AsyncMock(return_value={"id": 456, "iid": 10, "title": "Project AsyncIssue"})
         mock_response.headers = {"ETag": "etag101"}
 
         # cSpell: disable
@@ -197,12 +197,12 @@ class TestAsyncIssue:
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
             new_callable=AsyncMock,
-            return_value=({"id": 456, "iid": 10, "title": "Project Issue"}, 200, "etag101"),
+            return_value=({"id": 456, "iid": 10, "title": "Project AsyncIssue"}, 200, "etag101"),
         )
 
         result = await issue.get_issue(project_id="test/project", issue_iid=10, etag="old_etag")
 
-        assert result == ({"id": 456, "iid": 10, "title": "Project Issue"}, 200, "etag101")
+        assert result == ({"id": 456, "iid": 10, "title": "Project AsyncIssue"}, 200, "etag101")
         issue._get_issue_helper.assert_called_once_with(issue_id=None, project_id="test/project", issue_iid=10)
         # cSpell: disable
         issue._get.assert_called_once_with(endpoint="/projects/test%2Fproject/issues/10", etag="old_etag")
@@ -212,11 +212,11 @@ class TestAsyncIssue:
     async def test_edit_issue_minimal(self, mocker):
         """Test edit_issue with minimal parameters."""
         mock_client = MagicMock()
-        issue = Issue(client=mock_client)
+        issue = AsyncIssue(client=mock_client)
 
         mock_response = MagicMock()
         mock_response.status = 200
-        mock_response.json = AsyncMock(return_value={"id": 789, "title": "Updated Issue"})
+        mock_response.json = AsyncMock(return_value={"id": 789, "title": "Updated AsyncIssue"})
         mock_response.headers = {"ETag": "etag202"}
 
         mocker.patch.object(issue, "_edit_issue_helper", return_value=("/projects/test/issues/5", {}))
@@ -224,12 +224,12 @@ class TestAsyncIssue:
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
             new_callable=AsyncMock,
-            return_value=({"id": 789, "title": "Updated Issue"}, 200, "etag202"),
+            return_value=({"id": 789, "title": "Updated AsyncIssue"}, 200, "etag202"),
         )
 
         result = await issue.edit_issue(project_id="test/project", issue_iid=5)
 
-        assert result == ({"id": 789, "title": "Updated Issue"}, 200, "etag202")
+        assert result == ({"id": 789, "title": "Updated AsyncIssue"}, 200, "etag202")
         issue._edit_issue_helper.assert_called_once_with(
             project_id="test/project",
             issue_iid=5,
@@ -256,11 +256,11 @@ class TestAsyncIssue:
     async def test_edit_issue_with_params(self, mocker):
         """Test edit_issue with various parameters."""
         mock_client = MagicMock()
-        issue = Issue(client=mock_client)
+        issue = AsyncIssue(client=mock_client)
 
         mock_response = MagicMock()
         mock_response.status = 200
-        mock_response.json = AsyncMock(return_value={"id": 101, "title": "Fully Updated Issue"})
+        mock_response.json = AsyncMock(return_value={"id": 101, "title": "Fully Updated AsyncIssue"})
         mock_response.headers = {"ETag": "etag303"}
 
         expected_payload = {
@@ -279,7 +279,7 @@ class TestAsyncIssue:
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
             new_callable=AsyncMock,
-            return_value=({"id": 101, "title": "Fully Updated Issue"}, 200, "etag303"),
+            return_value=({"id": 101, "title": "Fully Updated AsyncIssue"}, 200, "etag303"),
         )
 
         result = await issue.edit_issue(
@@ -296,7 +296,7 @@ class TestAsyncIssue:
             weight=3,
         )
 
-        assert result == ({"id": 101, "title": "Fully Updated Issue"}, 200, "etag303")
+        assert result == ({"id": 101, "title": "Fully Updated AsyncIssue"}, 200, "etag303")
         issue._edit_issue_helper.assert_called_once_with(
             project_id=123,
             issue_iid=7,
