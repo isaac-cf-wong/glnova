@@ -156,7 +156,7 @@ class TestIssue:
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": 123, "title": "Test Issue"}
 
-        mocker.patch.object(issue, "_get_issue_helper", return_value=("/issues/123", {}))
+        mocker.patch.object(issue, "_get_issue_helper", return_value=("/issues/123"))
         mocker.patch.object(issue, "_get", return_value=mock_response)
         mocker.patch(
             "glnova.issue.issue.process_response_with_last_modified",
@@ -179,7 +179,7 @@ class TestIssue:
         mock_response.json.return_value = {"id": 456, "iid": 10, "title": "Project Issue"}
 
         # cSpell: disable
-        mocker.patch.object(issue, "_get_issue_helper", return_value=("/projects/test%2Fproject/issues/10", {}))
+        mocker.patch.object(issue, "_get_issue_helper", return_value=("/projects/test%2Fproject/issues/10"))
         # cSpell: enable
         mocker.patch.object(issue, "_get", return_value=mock_response)
         mocker.patch(

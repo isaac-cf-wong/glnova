@@ -50,35 +50,32 @@ class TestBaseIssue:
     def test_list_issues_helper_minimal(self):
         """Test _list_issues_helper with minimal parameters."""
         base_issue = BaseIssue()
-        endpoint, params, kwargs = base_issue._list_issues_helper()
+        endpoint, params = base_issue._list_issues_helper()
         assert endpoint == "/issues"
         assert params == {"page": 1, "per_page": 20}
-        assert kwargs == {}
 
     def test_list_issues_helper_with_project(self):
         """Test _list_issues_helper with project."""
         base_issue = BaseIssue()
-        endpoint, params, kwargs = base_issue._list_issues_helper(project="test/project")
+        endpoint, params = base_issue._list_issues_helper(project="test/project")
         # cSpell:disable
         assert endpoint == "/projects/test%2Fproject/issues"
         # cSpell:enable
         assert params == {"page": 1, "per_page": 20}
-        assert kwargs == {}
 
     def test_list_issues_helper_with_group(self):
         """Test _list_issues_helper with group."""
         base_issue = BaseIssue()
-        endpoint, params, kwargs = base_issue._list_issues_helper(group="test/group")
+        endpoint, params = base_issue._list_issues_helper(group="test/group")
         # cSpell:disable
         assert endpoint == "/groups/test%2Fgroup/issues"
         # cSpell:enable
         assert params == {"page": 1, "per_page": 20}
-        assert kwargs == {}
 
     def test_list_issues_helper_with_params(self):
         """Test _list_issues_helper with various parameters."""
         base_issue = BaseIssue()
-        endpoint, params, kwargs = base_issue._list_issues_helper(
+        endpoint, params = base_issue._list_issues_helper(
             state="opened",
             labels=["bug", "feature"],
             assignee_username=["user1"],
@@ -94,19 +91,18 @@ class TestBaseIssue:
             "per_page": 10,
         }
         assert params == expected_params
-        assert kwargs == {}
 
     def test_list_issues_helper_cursor_project(self):
         """Test _list_issues_helper with cursor for project issues."""
         base_issue = BaseIssue()
-        endpoint, params, _kwargs = base_issue._list_issues_helper(project="test", cursor="abc123")
+        endpoint, params = base_issue._list_issues_helper(project="test", cursor="abc123")
         assert endpoint == "/projects/test/issues"
         assert params["cursor"] == "abc123"
 
     def test_list_issues_helper_cursor_non_project(self, caplog):
         """Test _list_issues_helper with cursor for non-project issues logs warning."""
         base_issue = BaseIssue()
-        endpoint, params, _kwargs = base_issue._list_issues_helper(cursor="abc123")
+        endpoint, params = base_issue._list_issues_helper(cursor="abc123")
         assert endpoint == "/issues"
         assert "cursor" not in params
         assert "Cursor pagination is only supported for project issues endpoints." in caplog.text
@@ -137,13 +133,6 @@ class TestBaseIssue:
         with pytest.raises(ValueError, match=r"Either issue_id or both project_id and issue_iid must be provided."):
             base_issue._get_issue_endpoint()
 
-    def test_get_issue_helper(self):
-        """Test _get_issue_helper."""
-        base_issue = BaseIssue()
-        endpoint, params = base_issue._get_issue_helper(issue_id=123, extra="value")
-        assert endpoint == "/issues/123"
-        assert params == {"extra": "value"}
-
     def test_edit_issue_endpoint_str(self):
         """Test _edit_issue_endpoint with project as string."""
         base_issue = BaseIssue()
@@ -168,7 +157,7 @@ class TestBaseIssue:
     def test_list_issues_helper_full_params(self):
         """Test _list_issues_helper with all parameters to cover missing lines."""
         base_issue = BaseIssue()
-        endpoint, params, kwargs = base_issue._list_issues_helper(
+        endpoint, params = base_issue._list_issues_helper(
             assignee_id=123,
             assignee_username=["user1"],
             author_id=456,
@@ -238,7 +227,6 @@ class TestBaseIssue:
             "per_page": 20,
         }
         assert params == expected_params
-        assert kwargs == {}
 
     def test_edit_issue_helper_full_params(self):
         """Test _edit_issue_helper with all parameters to cover missing lines."""

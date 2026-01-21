@@ -21,7 +21,7 @@ class TestAsyncIssue:
         mock_response.json = AsyncMock(return_value=[{"id": 1, "title": "Test Issue"}])
         mock_response.headers = {"ETag": "etag123"}
 
-        mocker.patch.object(issue, "_list_issues_helper", return_value=("/issues", {"page": 1, "per_page": 20}, {}))
+        mocker.patch.object(issue, "_list_issues_helper", return_value=("/issues", {"page": 1, "per_page": 20}))
         mocker.patch.object(issue, "_get", new_callable=AsyncMock, return_value=mock_response)
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
@@ -90,7 +90,6 @@ class TestAsyncIssue:
                 "/projects/test%2Fproject/issues",
                 # cSpell: enable
                 {"state": "opened", "labels": "bug", "page": 2, "per_page": 10},
-                {},
             ),
         )
         mocker.patch.object(issue, "_get", new_callable=AsyncMock, return_value=mock_response)
@@ -166,7 +165,7 @@ class TestAsyncIssue:
         mock_response.json = AsyncMock(return_value={"id": 123, "title": "Test Issue"})
         mock_response.headers = {"ETag": "etag789"}
 
-        mocker.patch.object(issue, "_get_issue_helper", return_value=("/issues/123", {}))
+        mocker.patch.object(issue, "_get_issue_helper", return_value=("/issues/123"))
         mocker.patch.object(issue, "_get", new_callable=AsyncMock, return_value=mock_response)
         mocker.patch(
             "glnova.issue.async_issue.process_async_response_with_last_modified",
@@ -192,7 +191,7 @@ class TestAsyncIssue:
         mock_response.headers = {"ETag": "etag101"}
 
         # cSpell: disable
-        mocker.patch.object(issue, "_get_issue_helper", return_value=("/projects/test%2Fproject/issues/10", {}))
+        mocker.patch.object(issue, "_get_issue_helper", return_value=("/projects/test%2Fproject/issues/10"))
         # cSpell: enable
         mocker.patch.object(issue, "_get", new_callable=AsyncMock, return_value=mock_response)
         mocker.patch(
