@@ -11,7 +11,7 @@ from glnova.resource.async_resource import AsyncResource
 from glnova.utils.response import process_async_response_with_last_modified
 
 
-class Issue(BaseIssue, AsyncResource):
+class AsyncIssue(BaseIssue, AsyncResource):
     """GitLab Issue resource."""
 
     async def _list_issues(  # noqa: PLR0913
