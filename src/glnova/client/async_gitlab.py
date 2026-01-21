@@ -7,6 +7,8 @@ from typing import Any
 from aiohttp import ClientResponse, ClientSession, ClientTimeout
 
 from glnova.client.base import Client
+from glnova.issue.async_issue import AsyncIssue
+from glnova.user.async_user import AsyncUser
 
 
 class AsyncGitLab(Client):
@@ -22,6 +24,10 @@ class AsyncGitLab(Client):
         """
         super().__init__(token=token, base_url=base_url)
         self.session: ClientSession | None = None
+
+        # Initialize resource handlers
+        self.issue = AsyncIssue(client=self)
+        self.user = AsyncUser(client=self)
 
     def __str__(self) -> str:
         """Return a string representation of the AsyncGitLab client.
