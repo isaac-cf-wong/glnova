@@ -132,7 +132,7 @@ class Issue(BaseIssue, Resource):
             A Response object containing the list of issues.
 
         """
-        endpoint, params, kwargs = self._list_issues_helper(
+        endpoint, params = self._list_issues_helper(
             group=group,
             project=project,
             assignee_id=assignee_id,
