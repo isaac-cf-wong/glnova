@@ -1,6 +1,9 @@
+"""Base class for GitLab Issue resource."""
+
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 from typing import Any, Literal
 
 logger = logging.getLogger("glnova")
@@ -24,6 +27,7 @@ class BaseIssue:
 
         Returns:
             str: The constructed endpoint.
+
         """
         if project is not None:
             if isinstance(project, str):
@@ -45,8 +49,8 @@ class BaseIssue:
         author_id: int | None = None,
         author_username: str | None = None,
         confidential: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         due_date: (
             Literal["0", "any", "today", "tomorrow", "overdue", "week", "month", "next_month_and_previous_two_weeks"]
             | None
@@ -98,15 +102,15 @@ class BaseIssue:
         search: str | None = None,
         sort: Literal["asc", "desc"] | None = None,
         state: Literal["opened", "closed", "all"] | None = None,
-        updated_after: str | None = None,
-        updated_before: str | None = None,
+        updated_after: datetime | None = None,
+        updated_before: datetime | None = None,
         weight: int | Literal["None", "Any"] | None = None,
         with_labels_details: bool | None = None,
         cursor: str | None = None,
         page: int = 1,
         per_page: int = 20,
     ) -> tuple[str, dict[str, Any]]:
-        """Helper method to construct endpoint and parameters for listing issues.
+        """Construct endpoint and parameters for listing issues.
 
         Args:
             group: The group name or ID.
@@ -147,6 +151,7 @@ class BaseIssue:
 
         Returns:
             tuple: A tuple containing the endpoint, and parameters dictionary.
+
         """
         endpoint, endpoint_type = self._list_issues_endpoint(group=group, project=project)
 
@@ -162,9 +167,9 @@ class BaseIssue:
         if confidential is not None:
             params["confidential"] = confidential
         if created_after is not None:
-            params["created_after"] = created_after
+            params["created_after"] = created_after.isoformat()
         if created_before is not None:
-            params["created_before"] = created_before
+            params["created_before"] = created_before.isoformat()
         if due_date is not None:
             params["due_date"] = due_date
         if epic_id is not None:
@@ -204,9 +209,9 @@ class BaseIssue:
         if state is not None:
             params["state"] = state
         if updated_after is not None:
-            params["updated_after"] = updated_after
+            params["updated_after"] = updated_after.isoformat()
         if updated_before is not None:
-            params["updated_before"] = updated_before
+            params["updated_before"] = updated_before.isoformat()
         if weight is not None:
             params["weight"] = weight
         if with_labels_details is not None:
@@ -236,6 +241,7 @@ class BaseIssue:
 
         Returns:
             str: The constructed endpoint.
+
         """
         if issue_id is not None:
             return f"/issues/{issue_id}"
@@ -251,7 +257,7 @@ class BaseIssue:
         project_id: int | str | None = None,
         issue_iid: int | None = None,
     ) -> str:
-        """Helper method to construct endpoint and parameters for getting a specific issue.
+        """Construct endpoint and parameters for getting a specific issue.
 
         Args:
             issue_id: The global issue ID (Administrator only).
@@ -260,6 +266,7 @@ class BaseIssue:
 
         Returns:
             The constructed endpoint.
+
         """
         endpoint = self._get_issue_endpoint(
             issue_id=issue_id,
@@ -282,6 +289,7 @@ class BaseIssue:
 
         Returns:
             str: The constructed endpoint.
+
         """
         if isinstance(project_id, str):
             project_id = project_id.replace("/", "%2F")
@@ -306,10 +314,10 @@ class BaseIssue:
         remove_labels: list[str] | None = None,
         state_event: Literal["close", "reopen"] | None = None,
         title: str | None = None,
-        updated_at: str | None = None,
+        updated_at: datetime | None = None,
         weight: int | None = None,
     ) -> tuple[str, dict[str, Any]]:
-        """Helper method to construct endpoint and parameters for editing a specific issue.
+        """Construct endpoint and parameters for editing a specific issue.
 
         Args:
             project_id: The project name or ID.
@@ -333,6 +341,7 @@ class BaseIssue:
 
         Returns:
             tuple: A tuple containing the endpoint and parameters dictionary.
+
         """
         endpoint = self._edit_issue_endpoint(
             project_id=project_id,
@@ -369,7 +378,7 @@ class BaseIssue:
         if title is not None:
             payload["title"] = title
         if updated_at is not None:
-            payload["updated_at"] = updated_at
+            payload["updated_at"] = updated_at.isoformat()
         if weight is not None:
             payload["weight"] = weight
 

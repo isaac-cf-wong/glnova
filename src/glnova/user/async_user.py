@@ -29,6 +29,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             The response object.
+
         """
         endpoint, kwargs = self._get_user_helper(account_id=account_id, **kwargs)
         return await self._get(endpoint=endpoint, etag=etag, **kwargs)
@@ -51,6 +52,7 @@ class AsyncUser(BaseUser, AsyncResource):
                 - A dictionary with user information (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The Etag value from the response headers (if present).
+
         """
         response = await self._get_user(account_id=account_id, etag=etag, **kwargs)
         data, status_code, etag_value = await process_async_response_with_last_modified(response)
@@ -134,6 +136,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             The response object.
+
         """
         endpoint, payload, kwargs = self._modify_user_helper(
             account_id=account_id,
@@ -253,6 +256,7 @@ class AsyncUser(BaseUser, AsyncResource):
                 - A dictionary with updated user information (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
+
         """
         response = await self._modify_user(
             account_id=account_id,
@@ -360,6 +364,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             The response object.
+
         """
         endpoint, params, kwargs = self._list_users_helper(
             username=username,
@@ -460,6 +465,7 @@ class AsyncUser(BaseUser, AsyncResource):
                 - A list of user dictionaries (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
+
         """
         response = await self._list_users(
             username=username,

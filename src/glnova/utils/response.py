@@ -1,3 +1,5 @@
+"""Utility functions for processing HTTP responses with ETag handling."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -16,6 +18,7 @@ def process_response_with_last_modified(
 
     Returns:
         A tuple containing the response data, status code, and ETag.
+
     """
     status_code = response.status_code
     etag = response.headers.get("Etag", None)
@@ -33,6 +36,7 @@ async def process_async_response_with_last_modified(
 
     Returns:
         A tuple containing the response data, status code, and Etag.
+
     """
     status_code = response.status
     etag = response.headers.get("Etag", None)

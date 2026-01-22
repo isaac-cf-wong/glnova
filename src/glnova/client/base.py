@@ -14,6 +14,7 @@ class Client:
         Args:
             token: The API token for authentication.
             base_url: The base URL of the GitLab instance.
+
         """
         self.token = token
         self.base_url = base_url.rstrip("/")
@@ -26,6 +27,7 @@ class Client:
 
         Returns:
             str: String representation.
+
         """
         return f"<Client base_url={self.base_url}>"
 
@@ -35,6 +37,7 @@ class Client:
 
         Returns:
             str: The base API URL.
+
         """
         return f"{self.base_url}/api/v4"
 
@@ -46,6 +49,7 @@ class Client:
 
         Returns:
             str: The full URL.
+
         """
         return f"{self.api_url}/{endpoint.lstrip('/')}"
 
@@ -60,6 +64,7 @@ class Client:
 
         Returns:
             A dictionary of headers for the conditional request.
+
         """
         headers: dict[str, str] = {}
         if etag:

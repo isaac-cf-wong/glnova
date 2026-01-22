@@ -1,5 +1,7 @@
 """Unit tests for the base issue class."""
 
+from datetime import datetime
+
 import pytest
 
 from glnova.issue.base import BaseIssue
@@ -163,8 +165,8 @@ class TestBaseIssue:
             author_id=456,
             author_username="author1",
             confidential=True,
-            created_after="2023-01-01",
-            created_before="2023-12-31",
+            created_after=datetime(2023, 1, 1),
+            created_before=datetime(2023, 12, 31),
             due_date="today",
             epic_id=789,
             health_status="on_track",
@@ -184,8 +186,8 @@ class TestBaseIssue:
             search="query",
             sort="desc",
             state="opened",
-            updated_after="2023-06-01",
-            updated_before="2023-06-30",
+            updated_after=datetime(2023, 6, 1),
+            updated_before=datetime(2023, 6, 30),
             weight=5,
             with_labels_details=True,
             page=1,
@@ -198,8 +200,8 @@ class TestBaseIssue:
             "author_id": 456,
             "author_username": "author1",
             "confidential": True,
-            "created_after": "2023-01-01",
-            "created_before": "2023-12-31",
+            "created_after": "2023-01-01T00:00:00",
+            "created_before": "2023-12-31T00:00:00",
             "due_date": "today",
             "epic_id": 789,
             "health_status": "on_track",
@@ -219,8 +221,8 @@ class TestBaseIssue:
             "search": "query",
             "sort": "desc",
             "state": "opened",
-            "updated_after": "2023-06-01",
-            "updated_before": "2023-06-30",
+            "updated_after": "2023-06-01T00:00:00",
+            "updated_before": "2023-06-30T00:00:00",
             "weight": 5,
             "with_labels_details": True,
             "page": 1,
@@ -248,7 +250,7 @@ class TestBaseIssue:
             remove_labels=["old"],
             state_event="close",
             title="Title",
-            updated_at="2023-01-01T00:00:00Z",
+            updated_at=datetime(2023, 1, 1),
             weight=5,
         )
         assert endpoint == "/projects/test/issues/1"
@@ -267,7 +269,7 @@ class TestBaseIssue:
             "remove_labels": "old",
             "state_event": "close",
             "title": "Title",
-            "updated_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00",
             "weight": 5,
         }
         assert payload == expected_payload

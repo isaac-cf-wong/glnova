@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Literal, cast
 
 from requests import Response
@@ -23,8 +24,8 @@ class Issue(BaseIssue, Resource):
         author_id: int | None = None,
         author_username: str | None = None,
         confidential: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         due_date: (
             Literal["0", "any", "today", "tomorrow", "overdue", "week", "month", "next_month_and_previous_two_weeks"]
             | None
@@ -76,8 +77,8 @@ class Issue(BaseIssue, Resource):
         search: str | None = None,
         sort: Literal["asc", "desc"] | None = None,
         state: Literal["opened", "closed", "all"] | None = None,
-        updated_after: str | None = None,
-        updated_before: str | None = None,
+        updated_after: datetime | None = None,
+        updated_before: datetime | None = None,
         weight: int | Literal["None", "Any"] | None = None,
         with_labels_details: bool | None = None,
         cursor: str | None = None,
@@ -129,8 +130,9 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A Response object containing the list of issues.
+
         """
-        endpoint, params, kwargs = self._list_issues_helper(
+        endpoint, params = self._list_issues_helper(
             group=group,
             project=project,
             assignee_id=assignee_id,
@@ -178,8 +180,8 @@ class Issue(BaseIssue, Resource):
         author_id: int | None = None,
         author_username: str | None = None,
         confidential: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         due_date: (
             Literal["0", "any", "today", "tomorrow", "overdue", "week", "month", "next_month_and_previous_two_weeks"]
             | None
@@ -231,8 +233,8 @@ class Issue(BaseIssue, Resource):
         search: str | None = None,
         sort: Literal["asc", "desc"] | None = None,
         state: Literal["opened", "closed", "all"] | None = None,
-        updated_after: str | None = None,
-        updated_before: str | None = None,
+        updated_after: datetime | None = None,
+        updated_before: datetime | None = None,
         weight: int | Literal["None", "Any"] | None = None,
         with_labels_details: bool | None = None,
         cursor: str | None = None,
@@ -284,6 +286,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A tuple containing a list of issues, the status code, and the ETag value.
+
         """
         response = self._list_issues(
             group=group,
@@ -346,6 +349,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A Response object containing the issue details.
+
         """
         endpoint = self._get_issue_helper(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid)
         return self._get(endpoint=endpoint, etag=etag, **kwargs)
@@ -369,6 +373,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A tuple containing the issue details, the status code, and the ETag value.
+
         """
         response = self._get_issue(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, etag=etag, **kwargs)
         data, status_code, etag_value = process_response_with_last_modified(response)
@@ -392,7 +397,7 @@ class Issue(BaseIssue, Resource):
         remove_labels: list[str] | None = None,
         state_event: Literal["close", "reopen"] | None = None,
         title: str | None = None,
-        updated_at: str | None = None,
+        updated_at: datetime | None = None,
         weight: int | None = None,
         **kwargs: Any,
     ) -> Response:
@@ -421,6 +426,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A Response object containing the updated issue details.
+
         """
         endpoint, data = self._edit_issue_helper(
             project_id=project_id,
@@ -462,7 +468,7 @@ class Issue(BaseIssue, Resource):
         remove_labels: list[str] | None = None,
         state_event: Literal["close", "reopen"] | None = None,
         title: str | None = None,
-        updated_at: str | None = None,
+        updated_at: datetime | None = None,
         weight: int | None = None,
         **kwargs: Any,
     ) -> tuple[dict[str, Any], int, str | None]:
@@ -491,6 +497,7 @@ class Issue(BaseIssue, Resource):
 
         Returns:
             A tuple containing the updated issue details, the status code, and the ETag value.
+
         """
         response = self._edit_issue(
             project_id=project_id,

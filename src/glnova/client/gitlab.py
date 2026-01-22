@@ -8,6 +8,8 @@ import requests
 from requests import Response
 
 from glnova.client.base import Client
+from glnova.issue.issue import Issue
+from glnova.user.user import User
 
 
 class GitLab(Client):
@@ -19,15 +21,21 @@ class GitLab(Client):
         Args:
             token: The API token for authentication.
             base_url: The base URL of the GitLab instance.
+
         """
         super().__init__(token=token, base_url=base_url)
         self.session: requests.Session | None = None
+
+        # Initialize resource handlers
+        self.issue = Issue(client=self)
+        self.user = User(client=self)
 
     def __str__(self) -> str:
         """Return a string representation of the GitLab client.
 
         Returns:
             str: String representation.
+
         """
         return f"<GitLab base_url={self.base_url}>"
 
@@ -36,6 +44,7 @@ class GitLab(Client):
 
         Returns:
             The GitLab client instance.
+
         """
         if self.session is not None:
             raise RuntimeError("GitLab session already open; do not re-enter context manager.")
@@ -49,6 +58,7 @@ class GitLab(Client):
             exc_type: The exception type.
             exc_val: The exception value.
             exc_tb: The traceback.
+
         """
         if self.session:
             self.session.close()
@@ -75,6 +85,7 @@ class GitLab(Client):
 
         Returns:
             The HTTP response.
+
         """
         if self.session is None:
             raise RuntimeError(

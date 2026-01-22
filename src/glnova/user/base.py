@@ -10,6 +10,7 @@ class BaseUser:
 
     def _get_user_endpoint(self, account_id: int | None) -> str:
         """Determine the user endpoint based on user id.
+
         If account_id is None, returns the endpoint for the authenticated user.
 
         Args:
@@ -17,6 +18,7 @@ class BaseUser:
 
         Returns:
             The API endpoint for the user.
+
         """
         return "/user" if account_id is None else f"/users/{account_id}"
 
@@ -31,6 +33,7 @@ class BaseUser:
             A tuple containing the endpoint and the request arguments.
                 - The API endpoint for the user.
                 - A dictionary of request arguments.
+
         """
         endpoint = self._get_user_endpoint(account_id=account_id)
 
@@ -44,6 +47,7 @@ class BaseUser:
 
         Returns:
             The API endpoint for modifying an existing user.
+
         """
         return f"/users/{account_id}"
 
@@ -85,6 +89,7 @@ class BaseUser:
         **kwargs: Any,
     ) -> tuple[str, dict[str, Any], dict[str, Any]]:
         """Get the endpoint and arguments for modifying an existing user.
+
         Admin-only.
 
         Args:
@@ -128,6 +133,7 @@ class BaseUser:
                 - The API endpoint for updating the authenticated user.
                 - A dictionary representing the JSON payload.
                 - A dictionary of request arguments.
+
         """
         endpoint = self._modify_user_endpoint(account_id=account_id)
 
@@ -204,6 +210,7 @@ class BaseUser:
 
         Returns:
             The API endpoint for listing all users.
+
         """
         return "/users"
 
@@ -273,6 +280,7 @@ class BaseUser:
                 - The API endpoint for listing all users.
                 - A dictionary of query parameters.
                 - A dictionary of request arguments.
+
         """
         endpoint = self._list_users_endpoint()
 
