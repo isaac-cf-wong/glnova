@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 from typing import Any, Literal
 
 logger = logging.getLogger("glnova")
@@ -48,8 +49,8 @@ class BaseIssue:
         author_id: int | None = None,
         author_username: str | None = None,
         confidential: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         due_date: (
             Literal["0", "any", "today", "tomorrow", "overdue", "week", "month", "next_month_and_previous_two_weeks"]
             | None
@@ -101,8 +102,8 @@ class BaseIssue:
         search: str | None = None,
         sort: Literal["asc", "desc"] | None = None,
         state: Literal["opened", "closed", "all"] | None = None,
-        updated_after: str | None = None,
-        updated_before: str | None = None,
+        updated_after: datetime | None = None,
+        updated_before: datetime | None = None,
         weight: int | Literal["None", "Any"] | None = None,
         with_labels_details: bool | None = None,
         cursor: str | None = None,
@@ -166,9 +167,9 @@ class BaseIssue:
         if confidential is not None:
             params["confidential"] = confidential
         if created_after is not None:
-            params["created_after"] = created_after
+            params["created_after"] = created_after.isoformat()
         if created_before is not None:
-            params["created_before"] = created_before
+            params["created_before"] = created_before.isoformat()
         if due_date is not None:
             params["due_date"] = due_date
         if epic_id is not None:
@@ -208,9 +209,9 @@ class BaseIssue:
         if state is not None:
             params["state"] = state
         if updated_after is not None:
-            params["updated_after"] = updated_after
+            params["updated_after"] = updated_after.isoformat()
         if updated_before is not None:
-            params["updated_before"] = updated_before
+            params["updated_before"] = updated_before.isoformat()
         if weight is not None:
             params["weight"] = weight
         if with_labels_details is not None:
@@ -313,7 +314,7 @@ class BaseIssue:
         remove_labels: list[str] | None = None,
         state_event: Literal["close", "reopen"] | None = None,
         title: str | None = None,
-        updated_at: str | None = None,
+        updated_at: datetime | None = None,
         weight: int | None = None,
     ) -> tuple[str, dict[str, Any]]:
         """Construct endpoint and parameters for editing a specific issue.
@@ -377,7 +378,7 @@ class BaseIssue:
         if title is not None:
             payload["title"] = title
         if updated_at is not None:
-            payload["updated_at"] = updated_at
+            payload["updated_at"] = updated_at.isoformat()
         if weight is not None:
             payload["weight"] = weight
 

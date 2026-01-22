@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Literal, cast
 
 from aiohttp import ClientResponse
@@ -23,8 +24,8 @@ class AsyncIssue(BaseIssue, AsyncResource):
         author_id: int | None = None,
         author_username: str | None = None,
         confidential: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         due_date: (
             Literal["0", "any", "today", "tomorrow", "overdue", "week", "month", "next_month_and_previous_two_weeks"]
             | None
@@ -76,8 +77,8 @@ class AsyncIssue(BaseIssue, AsyncResource):
         search: str | None = None,
         sort: Literal["asc", "desc"] | None = None,
         state: Literal["opened", "closed", "all"] | None = None,
-        updated_after: str | None = None,
-        updated_before: str | None = None,
+        updated_after: datetime | None = None,
+        updated_before: datetime | None = None,
         weight: int | Literal["None", "Any"] | None = None,
         with_labels_details: bool | None = None,
         cursor: str | None = None,
@@ -179,8 +180,8 @@ class AsyncIssue(BaseIssue, AsyncResource):
         author_id: int | None = None,
         author_username: str | None = None,
         confidential: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         due_date: (
             Literal["0", "any", "today", "tomorrow", "overdue", "week", "month", "next_month_and_previous_two_weeks"]
             | None
@@ -232,8 +233,8 @@ class AsyncIssue(BaseIssue, AsyncResource):
         search: str | None = None,
         sort: Literal["asc", "desc"] | None = None,
         state: Literal["opened", "closed", "all"] | None = None,
-        updated_after: str | None = None,
-        updated_before: str | None = None,
+        updated_after: datetime | None = None,
+        updated_before: datetime | None = None,
         weight: int | Literal["None", "Any"] | None = None,
         with_labels_details: bool | None = None,
         cursor: str | None = None,
@@ -398,7 +399,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         remove_labels: list[str] | None = None,
         state_event: Literal["close", "reopen"] | None = None,
         title: str | None = None,
-        updated_at: str | None = None,
+        updated_at: datetime | None = None,
         weight: int | None = None,
         **kwargs: Any,
     ) -> ClientResponse:
@@ -469,7 +470,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         remove_labels: list[str] | None = None,
         state_event: Literal["close", "reopen"] | None = None,
         title: str | None = None,
-        updated_at: str | None = None,
+        updated_at: datetime | None = None,
         weight: int | None = None,
         **kwargs: Any,
     ) -> tuple[dict[str, Any], int, str | None]:
