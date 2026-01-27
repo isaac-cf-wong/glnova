@@ -207,7 +207,7 @@ class BaseProject:
                 simple=simple,
                 owned=owned,
                 starred=starred,
-                topic=topic[0] if isinstance(topic, list) else None,
+                topic=topic[0] if isinstance(topic, list) else topic,
                 with_issues_enabled=with_issues_enabled,
                 with_merge_requests_enabled=with_merge_requests_enabled,
                 with_shared=with_shared,
