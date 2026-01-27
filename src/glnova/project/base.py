@@ -92,7 +92,7 @@ class BaseProject:
         with_shared: bool | None = None,
         include_subgroups: bool | None = None,
         with_security_reports: bool | None = None,
-    ):
+    ) -> tuple[str, dict[str, Any]]:
         """Get endpoint and parameters for listing projects.
 
         Args:
