@@ -308,6 +308,8 @@ class AsyncProject(AsyncResource, BaseProject):
             with_shared=with_shared,
             include_subgroups=include_subgroups,
             with_security_reports=with_security_reports,
+            etag=etag,
+            **kwargs,
         )
         data, status_code, etag = await process_async_response_with_last_modified(response)
         return cast(list[dict[str, Any]], data), status_code, etag
