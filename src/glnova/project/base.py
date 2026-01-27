@@ -197,6 +197,7 @@ class BaseProject:
                 with_programming_language=with_programming_language,
             )
         else:  # group's projects
+            group_topic = (topic[0] if topic else None) if isinstance(topic, list) else topic
             params = self._list_group_projects_params(
                 active=active,
                 archived=archived,
@@ -207,7 +208,7 @@ class BaseProject:
                 simple=simple,
                 owned=owned,
                 starred=starred,
-                topic=topic[0] if isinstance(topic, list) else topic,
+                topic=group_topic,
                 with_issues_enabled=with_issues_enabled,
                 with_merge_requests_enabled=with_merge_requests_enabled,
                 with_shared=with_shared,
