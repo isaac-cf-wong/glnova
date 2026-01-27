@@ -35,7 +35,7 @@ class BaseProject:
             if isinstance(group_id, str):
                 group_id = group_id.replace("/", "%2F")
             return f"/groups/{group_id}/projects", "group's projects"
-        raise ValueError("Either user_id or project_id must be provided, not both.")
+        raise ValueError("Either user_id or group_id must be provided, not both.")
 
     def _list_projects_helper(  # noqa: PLR0913
         self,
