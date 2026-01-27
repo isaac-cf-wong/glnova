@@ -59,7 +59,7 @@ class TestListProjectsEndpoint:
     def test_endpoint_error_both_user_and_group(self):
         """Test error when both user_id and group_id are provided."""
         base_project = BaseProject()
-        with pytest.raises(ValueError, match=r"Either user_id or project_id must be provided, not both."):
+        with pytest.raises(ValueError, match=r"Either user_id or group_id must be provided, not both."):
             base_project._list_projects_endpoint(user_id=123, group_id=456)
 
 
