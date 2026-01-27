@@ -86,6 +86,10 @@ nav:
                   - Overview: reference/glnova/issue/index.md
                   - Issue: reference/glnova/issue/issue.md
                   - AsyncIssue: reference/glnova/issue/async_issue.md
+              - Project:
+                  - Overview: reference/glnova/project/index.md
+                  - Project: reference/glnova/project/project.md
+                  - AsyncProject: reference/glnova/project/async_project.md
               - User:
                   - Overview: reference/glnova/user/index.md
                   - User: reference/glnova/user/user.md
