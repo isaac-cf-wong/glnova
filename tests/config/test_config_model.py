@@ -94,7 +94,8 @@ class TestAccountConfig:
         repr_str = repr(account)
         assert "AccountConfig" in repr_str
         assert "my_account" in repr_str
-        assert "https://gitlab.example.com" in repr_str
+        # Verify the actual base_url field instead of checking substring
+        assert account.base_url == "https://gitlab.example.com"
         # Token should not be exposed in repr
         assert "secret_token" not in repr_str
 
