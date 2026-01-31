@@ -78,6 +78,10 @@ nav:
                   - Client: reference/glnova/client/base.md
                   - AsyncGitLab: reference/glnova/client/async_gitlab.md
                   - GitLab: reference/glnova/client/gitlab.md
+              - Config:
+                  - Overview: reference/glnova/config/index.md
+                  - Manager: reference/glnova/config/manager.md
+                  - Model: reference/glnova/config/model.md
               - Resource:
                   - Overview: reference/glnova/resource/index.md
                   - Resource: reference/glnova/resource/resource.md
