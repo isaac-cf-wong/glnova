@@ -182,13 +182,18 @@ class TestRegisterCommands:
     """Tests for register_commands function."""
 
     @patch("glnova.cli.main.app")
+    @patch("glnova.cli.config.main.config_app")
     @patch("glnova.cli.issue.main.issue_app")
-    def test_register_commands(self, mock_issue_app: MagicMock, mock_app: MagicMock) -> None:
+    def test_register_commands(
+        self, mock_issue_app: MagicMock, mock_config_app: MagicMock, mock_app: MagicMock
+    ) -> None:
         """Test that register_commands adds the issue_app to main app."""
         register_commands()
 
+        # Check that add_typer was called with config_app
+        mock_app.add_typer.assert_any_call(mock_config_app)
         # Check that add_typer was called with issue_app
-        mock_app.add_typer.assert_called_once_with(mock_issue_app)
+        mock_app.add_typer.assert_any_call(mock_issue_app)
 
     @patch("glnova.cli.main.app")
     @patch("glnova.cli.issue.main.issue_app")
