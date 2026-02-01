@@ -1,4 +1,3 @@
-# ruff: noqa PL0415
 """Main entry point for the glnova CLI application."""
 
 from __future__ import annotations
@@ -33,17 +32,18 @@ def setup_logging(level: LoggingLevel = LoggingLevel.INFO) -> None:
 
     Args:
         level: Logging level.
-    """
-    import logging
 
-    from rich.console import Console
-    from rich.logging import RichHandler
+    """
+    import logging  # noqa: PLC0415
+
+    from rich.console import Console  # noqa: PLC0415
+    from rich.logging import RichHandler  # noqa: PLC0415
 
     logger = logging.getLogger("glnova")
 
     logger.setLevel(level.value)
 
-    console = Console()
+    console = Console(stderr=True)
 
     # Remove any existing handlers to ensure RichHandler is used
     for h in logger.handlers[:]:  # Use slice copy to avoid modification during iteration
@@ -69,21 +69,41 @@ def setup_logging(level: LoggingLevel = LoggingLevel.INFO) -> None:
 
 @app.callback()
 def main(
+    ctx: typer.Context,
+    config_path: Annotated[
+        str | None,
+        typer.Option(
+            "--config-path",
+            help="Path to the configuration file. If not provided, it uses the path specified by `GLNOVA_CONFIG_PATH`. If the environment variable is not defined, it uses the default location.",
+        ),
+    ] = None,
     verbose: Annotated[
         LoggingLevel,
         typer.Option("--verbose", "-v", help="Set verbosity level."),
     ] = LoggingLevel.INFO,
 ) -> None:
-    """Main entry point for the CLI application.
+    """Set the main entry point for the CLI application.
 
     Args:
+        ctx: Typer context.
+        config_path: Path to the configuration file.
         verbose: Verbosity level for logging.
+
     """
+    import os  # noqa: PLC0415
+
+    config_path = config_path or os.getenv("GLNOVA_CONFIG_PATH")
+
+    ctx.obj = {"config_path": config_path}
+
     setup_logging(verbose)
 
 
 def register_commands() -> None:
     """Register CLI commands."""
+    from glnova.cli.issue.main import issue_app  # noqa: PLC0415
+
+    app.add_typer(issue_app)
 
 
 register_commands()
