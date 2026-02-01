@@ -1,4 +1,3 @@
-# ruff: noqa PL0415
 """Main entry point for the glnova CLI application."""
 
 from __future__ import annotations
@@ -33,17 +32,18 @@ def setup_logging(level: LoggingLevel = LoggingLevel.INFO) -> None:
 
     Args:
         level: Logging level.
-    """
-    import logging
 
-    from rich.console import Console
-    from rich.logging import RichHandler
+    """
+    import logging  # noqa: PLC0415
+
+    from rich.console import Console  # noqa: PLC0415
+    from rich.logging import RichHandler  # noqa: PLC0415
 
     logger = logging.getLogger("glnova")
 
     logger.setLevel(level.value)
 
-    console = Console()
+    console = Console(stderr=True)
 
     # Remove any existing handlers to ensure RichHandler is used
     for h in logger.handlers[:]:  # Use slice copy to avoid modification during iteration
@@ -74,10 +74,11 @@ def main(
         typer.Option("--verbose", "-v", help="Set verbosity level."),
     ] = LoggingLevel.INFO,
 ) -> None:
-    """Main entry point for the CLI application.
+    """Set the main entry point for the CLI application.
 
     Args:
         verbose: Verbosity level for logging.
+
     """
     setup_logging(verbose)
 
