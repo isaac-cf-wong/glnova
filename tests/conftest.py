@@ -8,15 +8,18 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
-def cleanup_logging_handlers() -> None:
-    """Clean up logging state after each test to prevent test pollution.
+def setup_logger() -> None:
+    """Ensure the glnova logger is properly configured for testing.
 
-    This ensures that handlers and settings from setup_logging() calls
-    in one test don't interfere with caplog in subsequent tests.
+    This fixture ensures that:
+    - The logger propagates messages to the root logger (for caplog capture)
+    - The logger level allows all messages to be logged
     """
-    # After test: completely reset the logger
     logger = logging.getLogger("glnova")
-    for handler in logger.handlers[:]:
-        logger.removeHandler(handler)
-    logger.setLevel(logging.NOTSET)
     logger.propagate = True
+    logger.setLevel(logging.DEBUG)
+
+    # Clear any existing handlers to avoid interference
+    for handler in list(logger.handlers):
+        handler.close()
+        logger.removeHandler(handler)
