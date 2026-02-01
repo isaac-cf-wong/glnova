@@ -285,8 +285,7 @@ class TestConfigManagerUpdateAccount:
             manager = ConfigManager(filename=config_file)
             manager.add_account("account1", "token1")
             manager.add_account("account2", "token2")
-            with caplog.at_level("WARNING"):
-                manager.update_account("account2", is_default=False)
+            manager.update_account("account2", is_default=False)
             assert "is not the default account" in caplog.text
 
 
