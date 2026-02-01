@@ -101,3 +101,67 @@ class TestListCommandSearchInValidation:
                 list_command(ctx, search_in=["invalid"])
 
             assert exc_info.value.exit_code == 1
+
+
+class TestListCommandParameterConversions:
+    """Tests for list_command parameter type conversions."""
+
+    @patch("glnova.client.gitlab.GitLab")
+    @patch("glnova.cli.utils.auth.get_auth_params")
+    def test_list_command_converts_assignee_id(self, mock_get_auth: MagicMock, mock_gitlab: MagicMock) -> None:
+        """Test list_command converts assignee_id parameter."""
+        ctx = MagicMock()
+        ctx.obj = {"config_path": None}
+
+        mock_get_auth.return_value = ("token", "https://gitlab.com")
+        mock_client = MagicMock()
+        mock_gitlab.return_value.__enter__.return_value = mock_client
+        mock_client.issue.list_issues.return_value = ([], 200, None)
+
+        with patch("builtins.print"):
+            list_command(ctx, assignee_id="None")
+
+    @patch("glnova.client.gitlab.GitLab")
+    @patch("glnova.cli.utils.auth.get_auth_params")
+    def test_list_command_converts_epic_id(self, mock_get_auth: MagicMock, mock_gitlab: MagicMock) -> None:
+        """Test list_command converts epic_id parameter."""
+        ctx = MagicMock()
+        ctx.obj = {"config_path": None}
+
+        mock_get_auth.return_value = ("token", "https://gitlab.com")
+        mock_client = MagicMock()
+        mock_gitlab.return_value.__enter__.return_value = mock_client
+        mock_client.issue.list_issues.return_value = ([], 200, None)
+
+        with patch("builtins.print"):
+            list_command(ctx, epic_id="Any")
+
+    @patch("glnova.client.gitlab.GitLab")
+    @patch("glnova.cli.utils.auth.get_auth_params")
+    def test_list_command_converts_iteration_id(self, mock_get_auth: MagicMock, mock_gitlab: MagicMock) -> None:
+        """Test list_command converts iteration_id parameter."""
+        ctx = MagicMock()
+        ctx.obj = {"config_path": None}
+
+        mock_get_auth.return_value = ("token", "https://gitlab.com")
+        mock_client = MagicMock()
+        mock_gitlab.return_value.__enter__.return_value = mock_client
+        mock_client.issue.list_issues.return_value = ([], 200, None)
+
+        with patch("builtins.print"):
+            list_command(ctx, iteration_id="None")
+
+    @patch("glnova.client.gitlab.GitLab")
+    @patch("glnova.cli.utils.auth.get_auth_params")
+    def test_list_command_converts_weight(self, mock_get_auth: MagicMock, mock_gitlab: MagicMock) -> None:
+        """Test list_command converts weight parameter."""
+        ctx = MagicMock()
+        ctx.obj = {"config_path": None}
+
+        mock_get_auth.return_value = ("token", "https://gitlab.com")
+        mock_client = MagicMock()
+        mock_gitlab.return_value.__enter__.return_value = mock_client
+        mock_client.issue.list_issues.return_value = ([], 200, None)
+
+        with patch("builtins.print"):
+            list_command(ctx, weight="Any")
