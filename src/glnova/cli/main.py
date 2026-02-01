@@ -76,7 +76,6 @@ def main(
             "--config-path",
             help="Path to the configuration file. If not provided, it uses the path specified by `GLNOVA_CONFIG_PATH`. If the environment variable is not defined, it uses the default location.",
         ),
-        typer.Option("--config-path", help="Path to the configuration file."),
     ] = None,
     verbose: Annotated[
         LoggingLevel,
