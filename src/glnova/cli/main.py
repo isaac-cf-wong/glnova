@@ -69,6 +69,14 @@ def setup_logging(level: LoggingLevel = LoggingLevel.INFO) -> None:
 
 @app.callback()
 def main(
+    ctx: typer.Context,
+    config_path: Annotated[
+        str | None,
+        typer.Option(
+            "--config-path",
+            help="Path to the configuration file. If not provided, it uses the path specified by `GLNOVA_CONFIG_PATH`. If the environment variable is not defined, it uses the default location.",
+        ),
+    ] = None,
     verbose: Annotated[
         LoggingLevel,
         typer.Option("--verbose", "-v", help="Set verbosity level."),
@@ -77,9 +85,17 @@ def main(
     """Set the main entry point for the CLI application.
 
     Args:
+        ctx: Typer context.
+        config_path: Path to the configuration file.
         verbose: Verbosity level for logging.
 
     """
+    import os  # noqa: PLC0415
+
+    config_path = config_path or os.getenv("GLNOVA_CONFIG_PATH")
+
+    ctx.obj = {"config_path": config_path}
+
     setup_logging(verbose)
 
 
