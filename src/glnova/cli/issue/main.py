@@ -13,6 +13,13 @@ issue_app = typer.Typer(
 
 def register_commands() -> None:
     """Register issue subcommands."""
+    from glnova.cli.issue.edit import edit_command  # noqa: PLC0415
+    from glnova.cli.issue.get import get_command  # noqa: PLC0415
+    from glnova.cli.issue.list import list_command  # noqa: PLC0415
+
+    issue_app.command(name="edit", help="Edit a GitLab issue.")(edit_command)
+    issue_app.command(name="get", help="Get a specific GitLab issue.")(get_command)
+    issue_app.command(name="list", help="List GitLab issues.")(list_command)
 
 
 register_commands()
