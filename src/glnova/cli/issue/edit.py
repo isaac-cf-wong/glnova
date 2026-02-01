@@ -40,28 +40,28 @@ def edit_command(  # noqa: PLR0913
         list[int] | None,
         typer.Option(
             "--assignee-ids",
-            help="Assignee IDs to assign to the issue. Use comma-separated values.",
+            help="Assignee IDs to assign to the issue. Repeat --assignee-ids for multiple values.",
         ),
     ] = None,
     labels: Annotated[
         list[str] | None,
         typer.Option(
             "--labels",
-            help="Labels to set on the issue. Use comma-separated values.",
+            help="Labels to set on the issue. Repeat --labels for multiple values.",
         ),
     ] = None,
     add_labels: Annotated[
         list[str] | None,
         typer.Option(
             "--add-labels",
-            help="Labels to add to the issue. Use comma-separated values.",
+            help="Labels to add to the issue. Repeat --add-labels for multiple values.",
         ),
     ] = None,
     remove_labels: Annotated[
         list[str] | None,
         typer.Option(
             "--remove-labels",
-            help="Labels to remove from the issue. Use comma-separated values.",
+            help="Labels to remove from the issue. Repeat --remove-labels for multiple values.",
         ),
     ] = None,
     milestone_id: Annotated[
