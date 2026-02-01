@@ -8,6 +8,7 @@ from aiohttp import ClientResponse, ClientSession, ClientTimeout
 
 from glnova.client.base import Client
 from glnova.issue.async_issue import AsyncIssue
+from glnova.project.async_project import AsyncProject
 from glnova.user.async_user import AsyncUser
 
 
@@ -27,6 +28,7 @@ class AsyncGitLab(Client):
 
         # Initialize resource handlers
         self.issue = AsyncIssue(client=self)
+        self.project = AsyncProject(client=self)
         self.user = AsyncUser(client=self)
 
     def __str__(self) -> str:
