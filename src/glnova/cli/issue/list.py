@@ -401,7 +401,7 @@ def list_command(  # noqa: PLR0913
         search_in_list = cast(list[Literal["title", "description"]], list(search_in))
     try:
         with GitLab(token=token, base_url=base_url) as client:
-            data, status_code, etag = client.issue.list_issues(
+            data, status_code, etag_response = client.issue.list_issues(
                 group=str_to_int_or_none(group),
                 project=str_to_int_or_none(project),
                 assignee_id=assignee_id_value,
@@ -444,7 +444,7 @@ def list_command(  # noqa: PLR0913
                 "data": data,
                 "metadata": {
                     "status_code": status_code,
-                    "etag": etag,
+                    "etag": etag_response,
                 },
             }
             print(json.dumps(result, default=str, indent=2))
