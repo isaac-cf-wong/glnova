@@ -1,4 +1,4 @@
-"""Utility functions for the command lint interface."""
+"""Utility functions for the command line interface."""
 
 from __future__ import annotations
 
