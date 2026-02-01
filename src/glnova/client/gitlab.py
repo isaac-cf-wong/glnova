@@ -9,6 +9,7 @@ from requests import Response
 
 from glnova.client.base import Client
 from glnova.issue.issue import Issue
+from glnova.project.project import Project
 from glnova.user.user import User
 
 
@@ -28,6 +29,7 @@ class GitLab(Client):
 
         # Initialize resource handlers
         self.issue = Issue(client=self)
+        self.project = Project(client=self)
         self.user = User(client=self)
 
     def __str__(self) -> str:
