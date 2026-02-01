@@ -13,6 +13,9 @@ project_app = typer.Typer(
 
 def register_commands() -> None:
     """Register issue subcommands."""
+    from glnova.cli.project.list import list_command  # noqa: PLC0415
+
+    project_app.command(name="list", help="List projects.")(list_command)
 
 
 register_commands()
