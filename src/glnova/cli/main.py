@@ -85,6 +85,9 @@ def main(
 
 def register_commands() -> None:
     """Register CLI commands."""
+    from glnova.cli.issue.main import issue_app  # noqa: PLC0415
+
+    app.add_typer(issue_app)
 
 
 register_commands()
