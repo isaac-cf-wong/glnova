@@ -90,6 +90,10 @@ nav:
                   - Overview: reference/glnova/issue/index.md
                   - Issue: reference/glnova/issue/issue.md
                   - AsyncIssue: reference/glnova/issue/async_issue.md
+              - Merge Request:
+                  - Overview: reference/glnova/merge_request/index.md
+                  - Merge Request: reference/glnova/merge_request/merge_request.md
+                  - Async Merge Request: reference/glnova/merge_request/async_merge_request.md
               - Project:
                   - Overview: reference/glnova/project/index.md
                   - Project: reference/glnova/project/project.md
