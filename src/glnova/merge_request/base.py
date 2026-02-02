@@ -508,7 +508,7 @@ class BaseMergeRequest:
         if environment is not None:
             params["environment"] = environment
         if search_in is not None:
-            params["search_in"] = ",".join(search_in)
+            params["in"] = ",".join(search_in)
         if labels is not None:
             params["labels"] = ",".join(labels) if isinstance(labels, list) else labels
         if merge_user_id is not None:
