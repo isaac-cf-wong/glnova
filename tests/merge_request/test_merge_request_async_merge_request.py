@@ -129,7 +129,7 @@ class TestAsyncMergeRequest:
         assert params["sort"] == "desc"
         # List parameters converted to comma-separated strings
         assert params["labels"] == "bug,feature"
-        assert params["search_in"] == "title,description"
+        assert params["in"] == "title,description"
         assert call_args[1]["etag"] == "some-etag"
 
     @pytest.mark.asyncio

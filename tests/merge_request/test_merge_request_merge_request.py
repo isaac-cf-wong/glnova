@@ -129,7 +129,7 @@ class TestMergeRequest:
         assert params["sort"] == "desc"
         # List parameters converted to comma-separated strings
         assert params["labels"] == "bug,feature"
-        assert params["search_in"] == "title,description"
+        assert params["in"] == "title,description"
         assert call_args[1]["etag"] == "some-etag"
 
     @patch("glnova.merge_request.merge_request.process_response_with_last_modified")
