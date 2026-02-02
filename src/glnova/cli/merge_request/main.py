@@ -13,6 +13,9 @@ merge_request_app = typer.Typer(
 
 def register_commands() -> None:
     """Register merge request subcommands."""
+    from glnova.cli.merge_request.list import list_command  # noqa: PLC0415
+
+    merge_request_app.command(name="list", help="List GitLab merge requests.")(list_command)
 
 
 register_commands()
