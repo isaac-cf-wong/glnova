@@ -17,8 +17,8 @@ class MergeRequest(BaseMergeRequest, Resource):
 
     def _list_merge_requests(  # noqa: PLR0913
         self,
-        project_id: int | str | None,
-        group_id: int | str | None,
+        project_id: int | str | None = None,
+        group_id: int | str | None = None,
         approved: Literal["yes", "no"] | None = None,
         approved_by_ids: list[int] | Literal["None", "Any"] | None = None,
         approved_by_usernames: list[str] | Literal["None", "Any"] | None = None,
@@ -179,8 +179,8 @@ class MergeRequest(BaseMergeRequest, Resource):
 
     def list_merge_requests(  # noqa: PLR0913
         self,
-        project_id: int | str | None,
-        group_id: int | str | None,
+        project_id: int | str | None = None,
+        group_id: int | str | None = None,
         approved: Literal["yes", "no"] | None = None,
         approved_by_ids: list[int] | Literal["None", "Any"] | None = None,
         approved_by_usernames: list[str] | Literal["None", "Any"] | None = None,
