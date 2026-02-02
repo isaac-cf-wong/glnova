@@ -59,7 +59,7 @@ class TestListCommandBasic:
             with pytest.raises(typer.Exit):
                 list_command(ctx)
 
-            mock_logger.error.assert_called_once_with("Error listing projects: %s", error)
+            mock_logger.exception.assert_called_once_with("Error listing projects: %s", error)
 
 
 class TestListCommandParameterConversions:

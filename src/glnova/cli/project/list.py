@@ -427,5 +427,5 @@ def list_command(  # noqa: PLR0913
             }
             print(json.dumps(result, default=str, indent=2))
     except Exception as e:
-        logger.error("Error listing projects: %s", e)
+        logger.exception("Error listing projects: %s", e)
         raise typer.Exit(code=1) from e
