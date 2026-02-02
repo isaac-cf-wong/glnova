@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 
@@ -16,6 +17,11 @@ from glnova.cli.merge_request.list import list_command
 
 class TestListCommand:
     """Tests for merge request list command."""
+
+    @staticmethod
+    def _strip_ansi(text: str) -> str:
+        """Remove ANSI escape codes from text."""
+        return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
     @pytest.fixture
     def runner(self) -> CliRunner:
@@ -284,9 +290,10 @@ class TestListCommand:
         """Test that the list command help works via CLI."""
         result = runner.invoke(app, ["merge-request", "list", "--help"])
         assert result.exit_code == 0
-        assert "--project-id" in result.output
-        assert "--group-id" in result.output
-        assert "--state" in result.output
-        assert "--assignee-id" in result.output
-        assert "--approved" in result.output
-        assert "--labels" in result.output
+        output = self._strip_ansi(result.output)
+        assert "--project-id" in output
+        assert "--group-id" in output
+        assert "--state" in output
+        assert "--assignee-id" in output
+        assert "--approved" in output
+        assert "--labels" in output

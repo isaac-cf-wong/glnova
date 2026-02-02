@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+
 import pytest
 from typer.testing import CliRunner
 
@@ -10,6 +12,11 @@ from glnova.cli.merge_request.main import merge_request_app
 
 class TestMergeRequestMain:
     """Tests for merge request CLI main app."""
+
+    @staticmethod
+    def _strip_ansi(text: str) -> str:
+        """Remove ANSI escape codes from text."""
+        return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
     @pytest.fixture
     def runner(self) -> CliRunner:
@@ -26,14 +33,16 @@ class TestMergeRequestMain:
         """Test that the merge request app has a list command."""
         result = runner.invoke(merge_request_app, ["--help"])
         assert result.exit_code == 0
-        assert "list" in result.output
-        assert "List GitLab merge requests." in result.output
+        output = self._strip_ansi(result.output)
+        assert "list" in output
+        assert "List GitLab merge requests." in output
 
     def test_merge_request_app_list_command_help(self, runner: CliRunner) -> None:
         """Test that the list command help works."""
         result = runner.invoke(merge_request_app, ["list", "--help"])
         assert result.exit_code == 0
-        assert "--project-id" in result.output
-        assert "--group-id" in result.output
-        assert "--state" in result.output
-        assert "--assignee-id" in result.output
+        output = self._strip_ansi(result.output)
+        assert "--project-id" in output
+        assert "--group-id" in output
+        assert "--state" in output
+        assert "--assignee-id" in output
