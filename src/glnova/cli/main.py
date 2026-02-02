@@ -103,10 +103,12 @@ def register_commands() -> None:
     """Register CLI commands."""
     from glnova.cli.config.main import config_app  # noqa: PLC0415
     from glnova.cli.issue.main import issue_app  # noqa: PLC0415
+    from glnova.cli.merge_request.main import merge_request_app  # noqa: PLC0415
     from glnova.cli.project.main import project_app  # noqa: PLC0415
 
     app.add_typer(config_app)
     app.add_typer(issue_app)
+    app.add_typer(merge_request_app)
     app.add_typer(project_app)
 
 
