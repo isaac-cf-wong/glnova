@@ -286,6 +286,35 @@ class TestListCommand:
         assert call_kwargs["page"] == 3  # noqa: PLR2004
         assert call_kwargs["per_page"] == 25  # noqa: PLR2004
 
+    @patch("glnova.cli.utils.auth.get_auth_params")
+    @patch("glnova.client.gitlab.GitLab")
+    def test_list_command_with_literal_list_values(
+        self, mock_gitlab: MagicMock, mock_get_auth: MagicMock, mock_context: MagicMock
+    ) -> None:
+        """Test list command with literal values in list parameters."""
+        mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
+        mock_client = MagicMock()
+        mock_gitlab.return_value.__enter__.return_value = mock_client
+        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+
+        list_command(
+            ctx=mock_context,
+            approved_by_ids=["None"],
+            approved_by_usernames=["Any"],
+            approver_ids=["None"],
+            reviewer_id="None",
+            reviewer_username="Any",
+            my_reaction_emoji="None",
+        )
+
+        call_kwargs = mock_client.merge_request.list_merge_requests.call_args[1]
+        assert call_kwargs["approved_by_ids"] == "None"
+        assert call_kwargs["approved_by_usernames"] == "Any"
+        assert call_kwargs["approver_ids"] == "None"
+        assert call_kwargs["reviewer_id"] == "None"
+        assert call_kwargs["reviewer_username"] == "Any"
+        assert call_kwargs["my_reaction_emoji"] == "None"
+
     def test_list_command_help_via_cli(self, runner: CliRunner) -> None:
         """Test that the list command help works via CLI."""
         result = runner.invoke(app, ["merge-request", "list", "--help"])
