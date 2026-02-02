@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from glnova.utils.exception import InvalidLiteralListError
+
 
 def str_to_int(value: str) -> int | str:
     """Convert a string to an integer if possible.
@@ -166,7 +168,7 @@ def list_str_to_list_literal(
 
     """
     if not all(ele in literal_tuple for ele in values):
-        raise ValueError(f"All values must be one of the literals: {literal_tuple}")
+        raise InvalidLiteralListError(literal_tuple)
     return values
 
 
