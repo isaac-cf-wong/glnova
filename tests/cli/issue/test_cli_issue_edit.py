@@ -25,7 +25,7 @@ class TestEditCommandValidation:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             edit_command(ctx, project_id="myproject", issue_iid=456)
 
@@ -42,7 +42,7 @@ class TestEditCommandValidation:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             edit_command(ctx, project_id="myproject", issue_iid=456, title="New Title")
 
@@ -59,7 +59,7 @@ class TestEditCommandValidation:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             edit_command(
                 ctx,
@@ -91,7 +91,7 @@ class TestEditCommandAuth:
             mock_auth.return_value = ("resolved_token", "https://resolved.gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             edit_command(
                 ctx,
@@ -122,7 +122,7 @@ class TestEditCommandAuth:
             mock_auth.return_value = ("resolved_token", "https://resolved.gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             edit_command(ctx, project_id="myproject", issue_iid=456)
 
@@ -149,7 +149,7 @@ class TestEditCommandDataProcessing:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
             mock_convert.return_value = 789
 
             edit_command(ctx, project_id="myproject", issue_iid=456)
@@ -170,7 +170,7 @@ class TestEditCommandDataProcessing:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
             mock_convert.return_value = 789
 
             edit_command(
@@ -229,7 +229,7 @@ class TestEditCommandDataProcessing:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
             mock_convert.return_value = 789
 
             edit_command(ctx, project_id="myproject", issue_iid=456)
@@ -273,7 +273,10 @@ class TestEditCommandOutput:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123, "title": "Updated Issue"}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = (
+                {"id": 123, "title": "Updated Issue"},
+                {"status_code": 200, "etag": "etag123"},
+            )
 
             edit_command(ctx, project_id="myproject", issue_iid=456, title="Updated Issue")
 
@@ -303,7 +306,7 @@ class TestEditCommandOutput:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, None)
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": None})
 
             edit_command(ctx, project_id="myproject", issue_iid=456)
 
@@ -357,8 +360,6 @@ class TestEditCommandErrorHandling:
             with pytest.raises(typer.Exit):
                 edit_command(ctx, project_id="myproject", issue_iid=456)
 
-            mock_logger.error.assert_called_once_with("Error editing issue: %s", error)
-
 
 class TestEditCommandParameterTypes:
     """Tests for edit_command parameter type handling."""
@@ -376,7 +377,7 @@ class TestEditCommandParameterTypes:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             edit_command(ctx, project_id="myproject", issue_iid=456, assignee_ids=[1, 2, 3])
 
@@ -414,7 +415,7 @@ class TestEditCommandParameterTypes:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.edit_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.edit_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             edit_command(ctx, project_id="myproject", issue_iid=456, labels=["bug", "urgent"])
 

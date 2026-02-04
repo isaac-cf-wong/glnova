@@ -257,7 +257,7 @@ class TestPublicAsyncListProjects:
         result = await mock_project.list_projects(archived=False)
 
         mock_project._list_projects.assert_called_once()
-        assert result == ([{"id": 1, "name": "async_project1"}], 200, "xyz789")
+        assert result == ([{"id": 1, "name": "async_project1"}], {"status_code": 200, "etag": "xyz789"})
 
     @pytest.mark.asyncio
     @patch("glnova.project.async_project.process_async_response_with_last_modified")
@@ -273,7 +273,7 @@ class TestPublicAsyncListProjects:
         result = await mock_project.list_projects(user_id=999)
 
         mock_project._list_projects.assert_called_once()
-        assert result == ([{"id": 2, "name": "async_user_project"}], 200, None)
+        assert result == ([{"id": 2, "name": "async_user_project"}], {"status_code": 200, "etag": None})
 
     @pytest.mark.asyncio
     @patch("glnova.project.async_project.process_async_response_with_last_modified")
@@ -289,7 +289,7 @@ class TestPublicAsyncListProjects:
         result = await mock_project.list_projects(group_id="devops")
 
         mock_project._list_projects.assert_called_once()
-        assert result == ([{"id": 3, "name": "async_group_project"}], 200, None)
+        assert result == ([{"id": 3, "name": "async_group_project"}], {"status_code": 200, "etag": None})
 
     @pytest.mark.asyncio
     @patch("glnova.project.async_project.process_async_response_with_last_modified")
@@ -306,7 +306,7 @@ class TestPublicAsyncListProjects:
 
         mock_project._list_projects.assert_called_once()
         # ETag is passed to _get, not _list_projects, so we check the result
-        assert result == ([], 304, "cached-etag")
+        assert result == ([], {"status_code": 304, "etag": "cached-etag"})
 
     @pytest.mark.asyncio
     @patch("glnova.project.async_project.process_async_response_with_last_modified")

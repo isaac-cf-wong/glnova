@@ -242,7 +242,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         per_page: int = 20,
         etag: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List issues with optional filters.
 
         Args:
@@ -285,7 +285,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            A tuple containing a list of issues, the status code, and the ETag value.
+            A tuple containing a list of issues and a dictionary with the status code and the ETag value.
 
         """
         response = await self._list_issues(
@@ -328,7 +328,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
             **kwargs,
         )
         data, status_code, etag_value = await process_async_response_with_last_modified(response)
-        return cast(list[dict[str, Any]], data), status_code, etag_value
+        return cast(list[dict[str, Any]], data), {"status_code": status_code, "etag": etag_value}
 
     async def _get_issue(
         self,
@@ -361,7 +361,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         issue_iid: int | None = None,
         etag: str | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Get a single issue by ID or IID.
 
         Args:
@@ -372,14 +372,14 @@ class AsyncIssue(BaseIssue, AsyncResource):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            A tuple containing the issue details, the status code, and the ETag value.
+            A tuple containing the issue details and a dictionary with the status code and the ETag value.
 
         """
         response = await self._get_issue(
             issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, etag=etag, **kwargs
         )
         data, status_code, etag_value = await process_async_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value
+        return cast(dict[str, Any], data), {"status_code": status_code, "etag": etag_value}
 
     async def _edit_issue(  # noqa: PLR0913
         self,
@@ -473,7 +473,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         updated_at: datetime | None = None,
         weight: int | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Edit an existing issue.
 
         Args:
@@ -498,7 +498,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            A tuple containing the updated issue details, the status code, and the ETag value.
+            A tuple containing the updated issue details and a dictionary with the status code and the ETag value.
 
         """
         response = await self._edit_issue(
@@ -523,4 +523,4 @@ class AsyncIssue(BaseIssue, AsyncResource):
             **kwargs,
         )
         data, status_code, etag_value = await process_async_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value
+        return cast(dict[str, Any], data), {"status_code": status_code, "etag": etag_value}

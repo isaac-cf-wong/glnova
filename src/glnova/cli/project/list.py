@@ -359,14 +359,12 @@ def list_command(  # noqa: PLR0913
         base_url: Base URL of the GitLab platform. If not provided, the base URL from the specified account will be used.
 
     """
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
+    from typing import Any  # noqa: PLC0415
 
+    from glnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from glnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from glnova.cli.utils.convert import str_to_int_or_none  # noqa: PLC0415
     from glnova.client.gitlab import GitLab  # noqa: PLC0415
-
-    logger = logging.getLogger("glnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"],
@@ -375,9 +373,9 @@ def list_command(  # noqa: PLR0913
         base_url=base_url,
     )
 
-    try:
+    def api_call() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         with GitLab(token=token, base_url=base_url) as client:
-            data, status_code, etag_response = client.project.list_projects(
+            return client.project.list_projects(
                 user_id=str_to_int_or_none(user_id),
                 group_id=str_to_int_or_none(group_id),
                 archived=archived,
@@ -418,14 +416,4 @@ def list_command(  # noqa: PLR0913
                 etag=etag,
             )
 
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag_response,
-                },
-            }
-            print(json.dumps(result, default=str, indent=2))
-    except Exception as e:
-        logger.exception("Error listing projects: %s", e)
-        raise typer.Exit(code=1) from e
+    execute_api_command(api_call=api_call, command_name="glnova project list")

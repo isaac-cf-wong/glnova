@@ -237,7 +237,7 @@ class MergeRequest(BaseMergeRequest, Resource):
         wip: Literal["yes", "no"] | None = None,
         etag: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List merge requests with various filtering options.
 
         Args:
@@ -288,7 +288,7 @@ class MergeRequest(BaseMergeRequest, Resource):
             **kwargs: Additional arguments.
 
         Returns:
-            A tuple containing a list of merge requests, the status code, and the ETag value.
+            A tuple containing a list of merge requests and a dictionary with the status code and the ETag value.
 
         """
         response = self._list_merge_requests(
@@ -339,4 +339,4 @@ class MergeRequest(BaseMergeRequest, Resource):
             **kwargs,
         )
         data, status_code, etag_value = process_response_with_last_modified(response)
-        return cast(list[dict[str, Any]], data), status_code, etag_value
+        return cast(list[dict[str, Any]], data), {"status_code": status_code, "etag": etag_value}

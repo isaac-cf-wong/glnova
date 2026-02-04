@@ -199,7 +199,7 @@ class TestAsyncMergeRequest:
         mock_process.assert_called_once_with(mock_response)
 
         # Verify return value
-        assert result == ({"data": "test"}, 200, "etag123")
+        assert result == ({"data": "test"}, {"status_code": 200, "etag": "etag123"})
 
     @pytest.mark.asyncio
     @patch("glnova.merge_request.async_merge_request.process_async_response_with_last_modified")
@@ -230,4 +230,4 @@ class TestAsyncMergeRequest:
 
         # Verify response processing
         mock_process.assert_called_once_with(mock_response)
-        assert result == ([{"id": 1}], 200, None)
+        assert result == ([{"id": 1}], {"status_code": 200, "etag": None})

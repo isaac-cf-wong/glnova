@@ -218,10 +218,9 @@ def list_command(  # noqa: PLR0913
         base_url: Base URL of the GitLab platform. If not provided, the base URL from the specified account will be used.
 
     """
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
-    from typing import cast  # noqa: PLC0415
+    from typing import Any, cast  # noqa: PLC0415
 
+    from glnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from glnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from glnova.cli.utils.convert import (  # noqa: PLC0415
         list_str_to_list_literal_or_none,
@@ -231,8 +230,6 @@ def list_command(  # noqa: PLR0913
         str_to_literal_or_int_or_none,
     )
     from glnova.client.gitlab import GitLab  # noqa: PLC0415
-
-    logger = logging.getLogger("glnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"],
@@ -304,9 +301,9 @@ def list_command(  # noqa: PLR0913
     if reviewer_username_value in ("None", "Any"):
         reviewer_username_value = cast(Literal["None", "Any"], reviewer_username_value)
 
-    try:
+    def api_call() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         with GitLab(token=token, base_url=base_url) as client:
-            response_data, status_code, response_etag = client.merge_request.list_merge_requests(
+            return client.merge_request.list_merge_requests(
                 project_id=project_id_value,
                 group_id=group_id_value,
                 approved=approved,
@@ -353,14 +350,4 @@ def list_command(  # noqa: PLR0913
                 etag=etag,
             )
 
-            result = {
-                "data": response_data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": response_etag,
-                },
-            }
-            print(json.dumps(result, default=str, indent=2))
-    except Exception as e:
-        logger.exception("Error listing merge requests: %s", e)
-        raise typer.Exit(code=1) from e
+    execute_api_command(api_call=api_call, command_name="glnova merge-request list")

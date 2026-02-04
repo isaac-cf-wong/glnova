@@ -50,7 +50,10 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([{"id": 1, "title": "Test MR"}], 200, "etag123")
+        mock_client.merge_request.list_merge_requests.return_value = (
+            [{"id": 1, "title": "Test MR"}],
+            {"status_code": 200, "etag": "etag123"},
+        )
 
         # Call the function
         list_command(ctx=mock_context, project_id="123", state="opened")
@@ -86,7 +89,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         list_command(ctx=mock_context, group_id="456", approved="yes")
 
@@ -104,7 +107,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         list_command(ctx=mock_context, assignee_id="None", author_id="Any", labels=["None"], milestone="Any")
 
@@ -123,7 +126,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         list_command(
             ctx=mock_context,
@@ -146,7 +149,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         created_after = datetime(2023, 1, 1)
         updated_before = datetime(2023, 12, 31)
@@ -166,7 +169,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         list_command(ctx=mock_context, page=5, per_page=50)
 
@@ -183,7 +186,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("custom_token", "https://custom.gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         list_command(
             ctx=mock_context, account_name="test_account", token="custom_token", base_url="https://custom.gitlab.com"
@@ -221,7 +224,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         list_command(
             ctx=mock_context,
@@ -295,7 +298,7 @@ class TestListCommand:
         mock_get_auth.return_value = ("test_token", "https://gitlab.example.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.merge_request.list_merge_requests.return_value = ([], 200, None)
+        mock_client.merge_request.list_merge_requests.return_value = ([], {"status_code": 200, "etag": None})
 
         list_command(
             ctx=mock_context,

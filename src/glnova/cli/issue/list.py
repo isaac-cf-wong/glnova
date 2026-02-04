@@ -351,15 +351,12 @@ def list_command(  # noqa: PLR0913
         base_url: Base URL of the GitLab platform. If not provided, the base URL from the specified account will be used.
 
     """
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
-    from typing import cast  # noqa: PLC0415
+    from typing import Any, cast  # noqa: PLC0415
 
+    from glnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from glnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from glnova.cli.utils.convert import str_to_int_or_none, str_to_literal_or_int_or_none  # noqa: PLC0415
     from glnova.client.gitlab import GitLab  # noqa: PLC0415
-
-    logger = logging.getLogger("glnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"],
@@ -399,9 +396,10 @@ def list_command(  # noqa: PLR0913
             )
             raise typer.Exit(code=1)
         search_in_list = cast(list[Literal["title", "description"]], list(search_in))
-    try:
+
+    def api_call() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         with GitLab(token=token, base_url=base_url) as client:
-            data, status_code, etag_response = client.issue.list_issues(
+            return client.issue.list_issues(
                 group=str_to_int_or_none(group),
                 project=str_to_int_or_none(project),
                 assignee_id=assignee_id_value,
@@ -440,14 +438,4 @@ def list_command(  # noqa: PLR0913
                 etag=etag,
             )
 
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag_response,
-                },
-            }
-            print(json.dumps(result, default=str, indent=2))
-    except Exception as e:
-        logger.error("Error listing issues: %s", e)
-        raise typer.Exit(code=1) from e
+    execute_api_command(api_call=api_call, command_name="glnova issue list")

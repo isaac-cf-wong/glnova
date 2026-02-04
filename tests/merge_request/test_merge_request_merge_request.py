@@ -198,7 +198,7 @@ class TestMergeRequest:
         mock_process.assert_called_once_with(mock_response)
 
         # Verify return value
-        assert result == ({"data": "test"}, 200, "etag123")
+        assert result == ({"data": "test"}, {"status_code": 200, "etag": "etag123"})
 
     @patch("glnova.merge_request.merge_request.process_response_with_last_modified")
     @patch("glnova.merge_request.merge_request.MergeRequest._list_merge_requests")
@@ -228,4 +228,4 @@ class TestMergeRequest:
 
         # Verify response processing
         mock_process.assert_called_once_with(mock_response)
-        assert result == ([{"id": 1}], 200, None)
+        assert result == ([{"id": 1}], {"status_code": 200, "etag": None})

@@ -183,14 +183,12 @@ def edit_command(  # noqa: PLR0913
         base_url: Base URL of the GitLab platform. If not provided, the base URL from the specified account will be used.
 
     """
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
+    from typing import Any  # noqa: PLC0415
 
+    from glnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from glnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from glnova.cli.utils.convert import str_to_int  # noqa: PLC0415
     from glnova.client.gitlab import GitLab  # noqa: PLC0415
-
-    logger = logging.getLogger("glnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"],
@@ -199,9 +197,9 @@ def edit_command(  # noqa: PLR0913
         base_url=base_url,
     )
 
-    try:
+    def api_call() -> tuple[dict[str, Any], dict[str, Any]]:
         with GitLab(token=token, base_url=base_url) as client:
-            data, status_code, etag = client.issue.edit_issue(
+            return client.issue.edit_issue(
                 project_id=str_to_int(project_id),
                 issue_iid=issue_iid,
                 title=title,
@@ -222,14 +220,4 @@ def edit_command(  # noqa: PLR0913
                 updated_at=updated_at,
             )
 
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag,
-                },
-            }
-            print(json.dumps(result, default=str, indent=2))
-    except Exception as e:
-        logger.error("Error editing issue: %s", e)
-        raise typer.Exit(code=1) from e
+    execute_api_command(api_call=api_call, command_name="glnova issue edit")
