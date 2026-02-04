@@ -242,7 +242,7 @@ class Issue(BaseIssue, Resource):
         per_page: int = 20,
         etag: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List issues with optional filters.
 
         Args:
@@ -285,7 +285,7 @@ class Issue(BaseIssue, Resource):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            A tuple containing a list of issues, the status code, and the ETag value.
+            A tuple containing a list of issues and a dictionary with the status code and the ETag value.
 
         """
         response = self._list_issues(
@@ -328,7 +328,7 @@ class Issue(BaseIssue, Resource):
             **kwargs,
         )
         data, status_code, etag_value = process_response_with_last_modified(response)
-        return cast(list[dict[str, Any]], data), status_code, etag_value
+        return cast(list[dict[str, Any]], data), {"status_code": status_code, "etag": etag_value}
 
     def _get_issue(
         self,
@@ -361,7 +361,7 @@ class Issue(BaseIssue, Resource):
         issue_iid: int | None = None,
         etag: str | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Get a single issue by ID or IID.
 
         Args:
@@ -372,12 +372,12 @@ class Issue(BaseIssue, Resource):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            A tuple containing the issue details, the status code, and the ETag value.
+            A tuple containing the issue details and a dictionary with the status code and the ETag value.
 
         """
         response = self._get_issue(issue_id=issue_id, project_id=project_id, issue_iid=issue_iid, etag=etag, **kwargs)
         data, status_code, etag_value = process_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value
+        return cast(dict[str, Any], data), {"status_code": status_code, "etag": etag_value}
 
     def _edit_issue(  # noqa: PLR0913
         self,
@@ -471,7 +471,7 @@ class Issue(BaseIssue, Resource):
         updated_at: datetime | None = None,
         weight: int | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Edit an existing issue.
 
         Args:
@@ -496,7 +496,7 @@ class Issue(BaseIssue, Resource):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            A tuple containing the updated issue details, the status code, and the ETag value.
+            A tuple containing the updated issue details and a dictionary with the status code and the ETag value.
 
         """
         response = self._edit_issue(
@@ -521,4 +521,4 @@ class Issue(BaseIssue, Resource):
             **kwargs,
         )
         data, status_code, etag_value = process_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value
+        return cast(dict[str, Any], data), {"status_code": status_code, "etag": etag_value}

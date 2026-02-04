@@ -218,7 +218,7 @@ class AsyncProject(AsyncResource, BaseProject):
         with_security_reports: bool | None = None,
         etag: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List projects with various filtering options.
 
         Args:
@@ -266,8 +266,7 @@ class AsyncProject(AsyncResource, BaseProject):
             A tuple containing:
 
                 - A list of dictionaries representing the projects.
-                - The HTTP status code of the response.
-                - The ETag of the response, if available.
+                - A dictionary with the HTTP status code and the ETag of the response, if available.
 
         """
         response = await self._list_projects(
@@ -312,4 +311,4 @@ class AsyncProject(AsyncResource, BaseProject):
             **kwargs,
         )
         data, status_code, etag = await process_async_response_with_last_modified(response)
-        return cast(list[dict[str, Any]], data), status_code, etag
+        return cast(list[dict[str, Any]], data), {"status_code": status_code, "etag": etag}
