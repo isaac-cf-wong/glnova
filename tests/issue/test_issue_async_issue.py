@@ -31,7 +31,7 @@ class TestAsyncIssue:
 
         result = await issue.list_issues()
 
-        assert result == ([{"id": 1, "title": "Test AsyncIssue"}], 200, "etag123")
+        assert result == ([{"id": 1, "title": "Test AsyncIssue"}], {"status_code": 200, "etag": "etag123"})
         issue._list_issues_helper.assert_called_once_with(
             group=None,
             project=None,
@@ -108,7 +108,7 @@ class TestAsyncIssue:
             etag="old_etag",
         )
 
-        assert result == ([{"id": 2, "title": "Filtered AsyncIssue"}], 200, "etag456")
+        assert result == ([{"id": 2, "title": "Filtered AsyncIssue"}], {"status_code": 200, "etag": "etag456"})
         issue._list_issues_helper.assert_called_once_with(
             group=None,
             project="test/project",
@@ -175,7 +175,7 @@ class TestAsyncIssue:
 
         result = await issue.get_issue(issue_id=123)
 
-        assert result == ({"id": 123, "title": "Test AsyncIssue"}, 200, "etag789")
+        assert result == ({"id": 123, "title": "Test AsyncIssue"}, {"status_code": 200, "etag": "etag789"})
         issue._get_issue_helper.assert_called_once_with(issue_id=123, project_id=None, issue_iid=None)
         issue._get.assert_called_once_with(endpoint="/issues/123", etag=None)
 
@@ -202,7 +202,10 @@ class TestAsyncIssue:
 
         result = await issue.get_issue(project_id="test/project", issue_iid=10, etag="old_etag")
 
-        assert result == ({"id": 456, "iid": 10, "title": "Project AsyncIssue"}, 200, "etag101")
+        assert result == (
+            {"id": 456, "iid": 10, "title": "Project AsyncIssue"},
+            {"status_code": 200, "etag": "etag101"},
+        )
         issue._get_issue_helper.assert_called_once_with(issue_id=None, project_id="test/project", issue_iid=10)
         # cSpell: disable
         issue._get.assert_called_once_with(endpoint="/projects/test%2Fproject/issues/10", etag="old_etag")
@@ -229,7 +232,7 @@ class TestAsyncIssue:
 
         result = await issue.edit_issue(project_id="test/project", issue_iid=5)
 
-        assert result == ({"id": 789, "title": "Updated AsyncIssue"}, 200, "etag202")
+        assert result == ({"id": 789, "title": "Updated AsyncIssue"}, {"status_code": 200, "etag": "etag202"})
         issue._edit_issue_helper.assert_called_once_with(
             project_id="test/project",
             issue_iid=5,
@@ -296,7 +299,7 @@ class TestAsyncIssue:
             weight=3,
         )
 
-        assert result == ({"id": 101, "title": "Fully Updated AsyncIssue"}, 200, "etag303")
+        assert result == ({"id": 101, "title": "Fully Updated AsyncIssue"}, {"status_code": 200, "etag": "etag303"})
         issue._edit_issue_helper.assert_called_once_with(
             project_id=123,
             issue_iid=7,

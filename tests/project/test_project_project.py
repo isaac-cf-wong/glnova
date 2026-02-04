@@ -221,7 +221,7 @@ class TestPublicListProjects:
         result = mock_project.list_projects(archived=True)
 
         mock_project._list_projects.assert_called_once()
-        assert result == ([{"id": 1, "name": "project1"}], 200, "abc123")
+        assert result == ([{"id": 1, "name": "project1"}], {"status_code": 200, "etag": "abc123"})
 
     @patch("glnova.project.project.process_response_with_last_modified")
     def test_public_list_projects_user(self, mock_process):
@@ -238,7 +238,7 @@ class TestPublicListProjects:
         result = mock_project.list_projects(user_id=456)
 
         mock_project._list_projects.assert_called_once()
-        assert result == ([{"id": 2, "name": "user_project"}], 200, None)
+        assert result == ([{"id": 2, "name": "user_project"}], {"status_code": 200, "etag": None})
 
     @patch("glnova.project.project.process_response_with_last_modified")
     def test_public_list_projects_group(self, mock_process):
@@ -255,7 +255,7 @@ class TestPublicListProjects:
         result = mock_project.list_projects(group_id="team")
 
         mock_project._list_projects.assert_called_once()
-        assert result == ([{"id": 3, "name": "group_project"}], 200, None)
+        assert result == ([{"id": 3, "name": "group_project"}], {"status_code": 200, "etag": None})
 
     @patch("glnova.project.project.process_response_with_last_modified")
     def test_public_list_projects_with_multiple_parameters(self, mock_process):

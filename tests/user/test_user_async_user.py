@@ -30,7 +30,7 @@ class TestAsyncUser:
 
         result = await user.get_user()
 
-        assert result == ({"id": 1, "name": "test"}, 200, "etag123")
+        assert result == ({"id": 1, "name": "test"}, {"status_code": 200, "etag": "etag123"})
         user._get.assert_called_once_with(endpoint="/user", etag=None)
 
     @pytest.mark.asyncio
@@ -53,7 +53,7 @@ class TestAsyncUser:
 
         result = await user.get_user(account_id=123)
 
-        assert result == ({"id": 123, "name": "test"}, 200, "etag123")
+        assert result == ({"id": 123, "name": "test"}, {"status_code": 200, "etag": "etag123"})
         user._get.assert_called_once_with(endpoint="/users/123", etag=None)
 
     @pytest.mark.asyncio
@@ -75,7 +75,7 @@ class TestAsyncUser:
 
         result = await user.get_user(account_id=123, etag="old_etag")
 
-        assert result == ({}, 304, "etag123")
+        assert result == ({}, {"status_code": 304, "etag": "etag123"})
         user._get.assert_called_once_with(endpoint="/users/123", etag="old_etag")
 
     @pytest.mark.asyncio
@@ -98,7 +98,7 @@ class TestAsyncUser:
 
         result = await user.modify_user(account_id=123, name="updated")
 
-        assert result == ({"id": 123, "name": "updated"}, 200, "etag123")
+        assert result == ({"id": 123, "name": "updated"}, {"status_code": 200, "etag": "etag123"})
         user._put.assert_called_once_with(
             endpoint="/users/123",
             json={"name": "updated"},
@@ -124,7 +124,7 @@ class TestAsyncUser:
 
         result = await user.list_users()
 
-        assert result == (["user1", "user2"], 200, "etag123")
+        assert result == (["user1", "user2"], {"status_code": 200, "etag": "etag123"})
         user._get.assert_called_once_with(
             endpoint="/users", params={"page": 1, "per_page": 20, "order_by": "id", "sort": "asc"}, etag=None
         )
@@ -149,7 +149,7 @@ class TestAsyncUser:
 
         result = await user.list_users(username="testuser", active=True, page=2, per_page=10)
 
-        assert result == (["user1"], 200, "etag123")
+        assert result == (["user1"], {"status_code": 200, "etag": "etag123"})
         user._get.assert_called_once_with(
             endpoint="/users",
             params={"username": "testuser", "active": True, "page": 2, "per_page": 10, "order_by": "id", "sort": "asc"},
@@ -175,4 +175,4 @@ class TestAsyncUser:
 
         result = await user.list_users()
 
-        assert result == ([], 304, "etag123")  # Special handling for 304 in list_users</content>
+        assert result == ([], {"status_code": 304, "etag": "etag123"})  # Special handling for 304 in list_users
