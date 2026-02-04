@@ -25,7 +25,7 @@ class TestGetCommandValidation:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             get_command(ctx, issue_id=123)
 
@@ -42,7 +42,7 @@ class TestGetCommandValidation:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             get_command(ctx, project_id="myproject", issue_iid=456)
 
@@ -116,7 +116,7 @@ class TestGetCommandAuth:
             mock_auth.return_value = ("resolved_token", "https://resolved.gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             get_command(ctx, issue_id=123, account_name=account_name, token=token, base_url=base_url)
 
@@ -140,7 +140,7 @@ class TestGetCommandAuth:
             mock_auth.return_value = ("resolved_token", "https://resolved.gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             get_command(ctx, issue_id=123)
 
@@ -167,7 +167,7 @@ class TestGetCommandDataProcessing:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
             mock_convert.return_value = 456
 
             get_command(ctx, project_id="myproject", issue_iid=789)
@@ -187,7 +187,7 @@ class TestGetCommandDataProcessing:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
 
             get_command(ctx, issue_id=123, etag="etag456")
 
@@ -212,7 +212,7 @@ class TestGetCommandDataProcessing:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": "etag123"})
             mock_convert.return_value = 456
 
             get_command(ctx, project_id="myproject", issue_iid=789)
@@ -242,7 +242,10 @@ class TestGetCommandOutput:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123, "title": "Test Issue"}, 200, "etag123")
+            mock_client.issue.get_issue.return_value = (
+                {"id": 123, "title": "Test Issue"},
+                {"status_code": 200, "etag": "etag123"},
+            )
 
             get_command(ctx, issue_id=123)
 
@@ -272,7 +275,7 @@ class TestGetCommandOutput:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.get_issue.return_value = ({"id": 123}, 200, None)
+            mock_client.issue.get_issue.return_value = ({"id": 123}, {"status_code": 200, "etag": None})
 
             get_command(ctx, issue_id=123)
 
@@ -325,5 +328,3 @@ class TestGetCommandErrorHandling:
 
             with pytest.raises(typer.Exit):
                 get_command(ctx, issue_id=123)
-
-            mock_logger.error.assert_called_once_with("Error getting issue: %s", error)

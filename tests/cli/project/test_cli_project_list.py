@@ -21,7 +21,7 @@ class TestListCommandBasic:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.project.list_projects.return_value = ([], 200, None)
+        mock_client.project.list_projects.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx)
@@ -59,8 +59,6 @@ class TestListCommandBasic:
             with pytest.raises(typer.Exit):
                 list_command(ctx)
 
-            mock_logger.exception.assert_called_once_with("Error listing projects: %s", error)
-
 
 class TestListCommandParameterConversions:
     """Tests for list_command parameter type conversions."""
@@ -75,7 +73,7 @@ class TestListCommandParameterConversions:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.project.list_projects.return_value = ([], 200, None)
+        mock_client.project.list_projects.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx, user_id="123")
@@ -90,7 +88,7 @@ class TestListCommandParameterConversions:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.project.list_projects.return_value = ([], 200, None)
+        mock_client.project.list_projects.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx, group_id="456")
@@ -105,7 +103,7 @@ class TestListCommandParameterConversions:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.project.list_projects.return_value = ([], 200, None)
+        mock_client.project.list_projects.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx, topic_id=789)

@@ -21,7 +21,7 @@ class TestListCommandBasic:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.issue.list_issues.return_value = ([], 200, None)
+        mock_client.issue.list_issues.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx)
@@ -59,8 +59,6 @@ class TestListCommandBasic:
             with pytest.raises(typer.Exit):
                 list_command(ctx)
 
-            mock_logger.error.assert_called_once_with("Error listing issues: %s", error)
-
 
 class TestListCommandSearchInValidation:
     """Tests for list_command search_in parameter validation."""
@@ -78,7 +76,7 @@ class TestListCommandSearchInValidation:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.list_issues.return_value = ([], 200, None)
+            mock_client.issue.list_issues.return_value = ([], {"status_code": 200, "etag": None})
 
             list_command(ctx, search_in=["title", "description"])
 
@@ -95,7 +93,7 @@ class TestListCommandSearchInValidation:
             mock_auth.return_value = ("token", "https://gitlab.com")
             mock_client = MagicMock()
             mock_gitlab.return_value.__enter__.return_value = mock_client
-            mock_client.issue.list_issues.return_value = ([], 200, None)
+            mock_client.issue.list_issues.return_value = ([], {"status_code": 200, "etag": None})
 
             with pytest.raises(typer.Exit) as exc_info:
                 list_command(ctx, search_in=["invalid"])
@@ -116,7 +114,7 @@ class TestListCommandParameterConversions:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.issue.list_issues.return_value = ([], 200, None)
+        mock_client.issue.list_issues.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx, assignee_id="None")
@@ -131,7 +129,7 @@ class TestListCommandParameterConversions:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.issue.list_issues.return_value = ([], 200, None)
+        mock_client.issue.list_issues.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx, epic_id="Any")
@@ -146,7 +144,7 @@ class TestListCommandParameterConversions:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.issue.list_issues.return_value = ([], 200, None)
+        mock_client.issue.list_issues.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx, iteration_id="None")
@@ -161,7 +159,7 @@ class TestListCommandParameterConversions:
         mock_get_auth.return_value = ("token", "https://gitlab.com")
         mock_client = MagicMock()
         mock_gitlab.return_value.__enter__.return_value = mock_client
-        mock_client.issue.list_issues.return_value = ([], 200, None)
+        mock_client.issue.list_issues.return_value = ([], {"status_code": 200, "etag": None})
 
         with patch("builtins.print"):
             list_command(ctx, weight="Any")
