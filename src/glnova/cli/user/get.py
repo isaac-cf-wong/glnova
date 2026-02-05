@@ -10,7 +10,7 @@ import typer
 def get_command(  # noqa: PLR0913
     ctx: typer.Context,
     account_id: Annotated[int | None, typer.Option("--account-id", help="Account ID of the user.")],
-    etag: Annotated[str | None, typer.Option("--etag", help="ETag for caching.")],
+    etag: Annotated[str | None, typer.Option("--etag", help="ETag for caching.")] = None,
     account_name: Annotated[
         str | None,
         typer.Option(
