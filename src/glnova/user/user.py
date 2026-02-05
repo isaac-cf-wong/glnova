@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Literal, cast
 
 from requests import Response
@@ -306,8 +307,8 @@ class User(BaseUser, Resource):
         external: bool | None = None,
         blocked: bool | None = None,
         humans: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         exclude_active: bool | None = None,
         exclude_external: bool | None = None,
         exclude_humans: bool | None = None,
@@ -404,8 +405,8 @@ class User(BaseUser, Resource):
         external: bool | None = None,
         blocked: bool | None = None,
         humans: bool | None = None,
-        created_after: str | None = None,
-        created_before: str | None = None,
+        created_after: datetime | None = None,
+        created_before: datetime | None = None,
         exclude_active: bool | None = None,
         exclude_external: bool | None = None,
         exclude_humans: bool | None = None,
