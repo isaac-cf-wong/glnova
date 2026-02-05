@@ -105,11 +105,13 @@ def register_commands() -> None:
     from glnova.cli.issue.main import issue_app  # noqa: PLC0415
     from glnova.cli.merge_request.main import merge_request_app  # noqa: PLC0415
     from glnova.cli.project.main import project_app  # noqa: PLC0415
+    from glnova.cli.user.main import user_app  # noqa: PLC0415
 
     app.add_typer(config_app)
     app.add_typer(issue_app)
     app.add_typer(merge_request_app)
     app.add_typer(project_app)
+    app.add_typer(user_app)
 
 
 register_commands()
