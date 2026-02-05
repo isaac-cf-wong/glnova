@@ -13,6 +13,9 @@ user_app = typer.Typer(
 
 def register_commands() -> None:
     """Register user subcommands."""
+    from glnova.cli.user.get import get_command  # noqa: PLC0415
+
+    user_app.command(name="get", help="Get user information.")(get_command)
 
 
 register_commands()
